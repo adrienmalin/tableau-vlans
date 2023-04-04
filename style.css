@@ -1,0 +1,34 @@
+body {
+    text-align: center;
+}
+main {
+    display: flex;
+    flex-flow: wrap;
+}
+main > table {
+    margin: auto;
+}
+.member {
+    border-collapse: collapse;
+    border: 4px solid #335;
+}
+.vlans {
+    border-collapse: collapse;
+}
+.member td,
+.vlans td {
+    border: 2px inset;
+}
+.number {
+    text-align: center;
+    min-width: 2em;
+    height: 2em;
+    mix-blend-mode: darken;
+}
+.pvid {
+    background-color: hsl(var(--pvid) 100% 58%);
+}
+.shutdown {
+    background-color: lightgray;
+    color: gray;
+}

@@ -28,13 +28,13 @@ echo "-->\n";
 <!DOCTYPE HTML>
 <html lang='fr'>
 <head>
-<title>Tableau des VLANs - <?=$sysname[1]?></title>
+<title>Tableau des VLANs - <?=$sysname[1] ?? "Switch sans nom"?></title>
 <link href="style.css" rel="stylesheet" />
 </head>
 <body>
 <header>
 <h1>
-<div><?=$sysname[1]?></div>
+<div><?=$sysname[1] ?? "Switch sans nom"?></div>
 <small><a href="https://<?=$address[1]?>" target="_blank"><?=$address[1]?></a></small>
 </h1>
 </header>

@@ -45,11 +45,11 @@ echo "-->\n";
 <?php
 function display_port($interface, $odd) {
     if ($interface["port"] % 2) {
-        $shutdown = (isset($interface["shutdown"]) and $interface["shutdown"]) ? "shutdown" : "";
-        $linktype = (isset($interface["linktype"]) and $interface["linktype"])  ? $interface["linktype"] : "";
-        $tagged = (isset($interface["tagged"]) and $interface["tagged"])  ? $interface["tagged"] : "0";
-        $untagged = (isset($interface["untagged"]) and $interface["untagged"])  ? $interface["untagged"] : "0";
-        $pvid = (isset($interface["pvid"]) and $interface["pvid"])  ? $interface["pvid"] : "0";
+        $shutdown = $interface["shutdown"] ?? "";
+        $linktype = $interface["linktype"] ?? "";
+        $tagged = $interface["tagged"] ?? "0";
+        $untagged = $interface["untagged"] ?? "0";
+        $pvid = $interface["pvid"] ?? "0";
         echo "<td class='number $shutdown $linktype' title='${interface[0]}' style='--tagged: $tagged; --untagged: $untagged; --pvid: $pvid'>${interface["port"]}</td>\n";
     }
 }
@@ -71,8 +71,8 @@ foreach ($stack as $member => $interfaces) {
 <?php
 foreach ($vlans as $vlan) {
     if (isset($vlan["pvid"]) and $vlan["pvid"] != 1) {
-        $name = isset($vlan["name"]) ? $vlan["name"] : "";
-        $description = isset($vlan["description"]) ? $vlan["description"] : "";
+        $name = $vlan["name"] ?? "";
+        $description = $vlan["description"] ?? "";
         echo "<tr title='${vlan[0]}'><td class='number pvid' style='--pvid: ${vlan["pvid"]}'>${vlan["pvid"]}</td><td>$name</td><td>$description</td></tr>";
     }
 }

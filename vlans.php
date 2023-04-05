@@ -44,7 +44,7 @@ echo "-->\n";
 <tbody>
 <?php
 function display_port($interface, $odd) {
-    if ($interface["port"] % 2) {
+    if ($interface["port"] % 2 == $odd) {
         $shutdown = $interface["shutdown"] ?? "";
         $linktype = $interface["linktype"] ?? "";
         $tagged = $interface["tagged"] ?? "0";

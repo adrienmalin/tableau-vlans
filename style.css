@@ -9,11 +9,13 @@ main > table {
     margin: auto;
 }
 .member {
-    border-collapse: collapse;
+    border-spacing: 0;
+    margin: 0;
     border: 4px solid #335;
 }
 .vlans {
-    border-collapse: collapse;
+    border-spacing: 0;
+    /*! border-collapse: collapse; */
 }
 .member td,
 .vlans td {
@@ -24,11 +26,29 @@ main > table {
     min-width: 2em;
     height: 2em;
     mix-blend-mode: darken;
+    padding: 3px;
 }
+.access,
 .pvid {
-    background-color: hsl(var(--pvid) 100% 58%);
+    background-color: hsl(var(--pvid) 100% 65%);
+}
+.trunk {
+    position: relative;
+    font-weight: bold;
+    border: 5px solid !important;
+    border-width: 5px !important;
+    border-image-slice: 1 !important;
+    border-image-source: linear-gradient(127deg, red, orange, yellow, green, blue, violet) !important;
+    padding: 0;
+    
+}
+.hybrid {
+    background-image: linear-gradient(135deg, hsl(var(--tagged) 100% 65%) 1.6rem, hsl(var(--untagged) 100% 65%) 1.6rem);
 }
 .shutdown {
     background-color: lightgray;
     color: gray;
+}
+td {
+    text-align: left
 }

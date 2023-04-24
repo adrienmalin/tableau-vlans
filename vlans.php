@@ -50,7 +50,7 @@ function display_port($interface, $odd) {
         $tagged = $interface["tagged"] ?? "0";
         $untagged = $interface["untagged"] ?? "0";
         $pvid = $interface["pvid"] ?? "0";
-        echo "<td class='number $shutdown $linktype' title='${interface[0]}' style='--tagged: $tagged; --untagged: $untagged; --pvid: $pvid'>${interface["port"]}</td>\n";
+        echo "<td class='number $shutdown $linktype' title='${interface[0]}' style='--pvid: $pvid; --tagged: $tagged; --untagged: $untagged;'>${interface["port"]}</td>\n";
     }
 }
 

@@ -19,16 +19,11 @@ foreach ($interfaces as $interface) {
     }
     $stack[$interface["member"]][$interface["port"]] = $interface;
 }
-
-echo "<!--\n";
-print_r($vlans);
-print_r($stack);
-echo "-->\n";
 ?>
 <!DOCTYPE HTML>
 <html lang='fr'>
 <head>
-<title>Tableau des VLANs - <?=$sysname[1] ?? "Switch sans nom"?></title>
+<title><?=$sysname[1] ?? "Switch sans nom"?> - Tableau des VLANs</title>
 <link href="style.css" rel="stylesheet" />
 </head>
 <body>
@@ -77,9 +72,9 @@ foreach ($vlans as $vlan) {
     }
 }
 ?>
-<tr><td class='number trunk'>T</td><td colspan='2'>Trunk</td></tr>
-<tr><td class='number hybrid' style='--tagged:60; --untagged:0'>H</td><td colspan='2'>Hybride (tagged/untagged)</td></tr>
-<tr><td class='number shutdown'>S</td><td colspan='2'>Interface désactivée</td></tr>
+<tr><td class='number trunk'></td><td colspan='2'>Trunk</td></tr>
+<tr><td class='number hybrid' style='--tagged:60; --untagged:0'></td><td colspan='2'>Hybride (tagged/untagged)</td></tr>
+<tr><td class='number shutdown'></td><td colspan='2'>Interface désactivée</td></tr>
 </tbody>
 </table>
 </main>

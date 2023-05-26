@@ -1,3 +1,6 @@
+:root {
+    --k: 1353651.53435435;
+}
 body {
     text-align: center;
 }
@@ -29,7 +32,7 @@ main > table {
 }
 .access,
 .pvid {
-    background-color: hsl(calc(67*var(--pvid)) 100% 60%);
+    background-color: hsl(calc(var(--k)*var(--pvid)) 100% 60%);
 }
 .trunk {
     position: relative;
@@ -41,7 +44,7 @@ main > table {
     
 }
 .hybrid {
-    background-image: linear-gradient(135deg, hsl(calc(67*var(--tagged)) 100% 60%) 50%, hsl(calc(67*var(--untagged)) 100% 60%) 50%);
+    background-image: linear-gradient(135deg, hsl(calc(var(--k)*var(--tagged)) 100% 60%) 50%, hsl(calc(var(--k)*var(--untagged)) 100% 60%) 50%);
 }
 .shutdown {
     background-color: lightgray;

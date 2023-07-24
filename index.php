@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html lang='fr'>
 <head>
-<title>Tableau des VLANs</title>
+<title>Schémas des VLANs</title>
 <style>
     ul {
         list-style: none;
@@ -10,7 +10,7 @@
 </head>
 <body>
 <header>
-<h1>Tableau des VLANs</h1>
+<h1>Schémas des VLANs</h1>
 </header>
 <main>
 <?php

@@ -11,6 +11,9 @@ main {
 main > table {
     margin: auto;
 }
+td {
+    text-align: left
+}
 .member {
     border-spacing: 0;
     margin: 0;
@@ -23,7 +26,7 @@ main > table {
 .vlans td {
     border: 2px inset;
 }
-.number {
+.interface {
     text-align: center;
     min-width: 2em;
     height: 2em;
@@ -50,6 +53,13 @@ main > table {
     background-color: lightgray;
     color: gray;
 }
-td {
-    text-align: left
+.poe {
+    position: relative;
+}
+.poe::after {
+    content: "⚡";
+    font-size: 0.7em;
+    position: absolute;
+    top: 0;
+    left: 0;
 }

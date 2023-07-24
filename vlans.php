@@ -11,7 +11,7 @@ $conf = file_get_contents($path);
 preg_match("/ sysname ([\w-]+)/", $conf, $sysname);
 preg_match("/ip address ([\d.]+)/", $conf, $address);
 preg_match_all("/(?<=\n)vlan (?P<pvid>\d+)[\r\n]+(?: name (?P<name>.+)[\r\n]+| description (?P<description>.+)[\r\n]+| .*[\r\n]+)*/", $conf, $vlans, PREG_SET_ORDER);
-preg_match_all("/(?<=\n)interface [\w-]+(?P<member>\d+)\/0\/(?P<port>\d+)[\r\n]+(?: port hybrid vlan (?P<tagged>\d+) tagged[\r\n]+| port hybrid vlan (?P<untagged>\d+)(?: \d+)* untagged[\r\n]+| port (?P<linktype>access|trunk pvid|hybrid pvid) vlan (?P<pvid>\d+)[\r\n]+| (?P<shutdown>shutdown)[\r\n]+| .*[\r\n]+)*/", $conf, $interfaces, PREG_SET_ORDER);
+preg_match_all("/(?<=\n)interface [\w-]+(?P<member>\d+)\/0\/(?P<port>\d+)[\r\n]+(?: port hybrid vlan (?P<tagged>\d+) tagged[\r\n]+| port hybrid vlan (?P<untagged>\d+)(?: \d+)* untagged[\r\n]+| port (?P<linktype>access|trunk pvid|hybrid pvid) vlan (?P<pvid>\d+)[\r\n]+| (?P<poe>poe) enable[\r\n]+| (?P<shutdown>shutdown)[\r\n]+| .*[\r\n]+)*/", $conf, $interfaces, PREG_SET_ORDER);
 $stack = array();
 foreach ($interfaces as $interface) {
     if (!isset($stack[$interface["member"]])) {
@@ -38,22 +38,17 @@ foreach ($interfaces as $interface) {
 <caption><h2>Interfaces</h2></caption>
 <tbody>
 <?php
-function display_port($interface, $odd) {
+function display_interface($interface, $odd) {
     if ($interface["port"] % 2 == $odd) {
-        $shutdown = $interface["shutdown"] ?? "";
-        $linktype = $interface["linktype"] ?? "";
-        $tagged = $interface["tagged"] ?? "0";
-        $untagged = $interface["untagged"] ?? "0";
-        $pvid = $interface["pvid"] ?? "0";
-        echo "<td class='number $shutdown $linktype' title='${interface[0]}' style='--pvid: $pvid; --tagged: $tagged; --untagged: $untagged;'>${interface["port"]}</td>\n";
+        echo "<td class='interface ${interface["shutdown"]} ${interface["linktype"]} ${interface["poe"]}' title='${interface[0]}' style='--pvid: ${interface["pvid"]}; --tagged: ${interface["tagged"]}; --untagged: ${interface["untagged"]};'>${interface["port"]}</td>\n";
     }
 }
 
 foreach ($stack as $member => $interfaces) {
     echo "<tr>\n<th>$member</th>\n<td>\n<table class='member'>\n<tbody>\n<tr>\n";
-    foreach ($interfaces as $interface) display_port($interface, 1);
+    foreach ($interfaces as $interface) display_interface($interface, 1);
     echo "</tr>\n<tr>\n";
-    foreach ($interfaces as $interface) display_port($interface, 0);
+    foreach ($interfaces as $interface) display_interface($interface, 0);
     echo "</tr>\n</tbody>\n</table>\n</td>\n</tr>\n";
 }
 ?>
@@ -68,13 +63,14 @@ foreach ($vlans as $vlan) {
     if (isset($vlan["pvid"]) and $vlan["pvid"] != 1) {
         $name = $vlan["name"] ?? "";
         $description = $vlan["description"] ?? "";
-        echo "<tr title='${vlan[0]}'><td class='number pvid' style='--pvid: ${vlan["pvid"]}'>${vlan["pvid"]}</td><td>$name</td><td>$description</td></tr>";
+        echo "<tr title='${vlan[0]}'><td class='interface pvid' style='--pvid: ${vlan["pvid"]}'>${vlan["pvid"]}</td><td>$name</td><td>$description</td></tr>";
     }
 }
 ?>
-<tr><td class='number trunk'></td><td colspan='2'>Trunk</td></tr>
-<tr><td class='number hybrid' style='--tagged:60; --untagged:0'></td><td colspan='2'>Hybride (tagged/untagged)</td></tr>
-<tr><td class='number shutdown'></td><td colspan='2'>Interface désactivée</td></tr>
+<tr><td class='interface trunk'></td><td colspan='2'>Trunk</td></tr>
+<tr><td class='interface hybrid' style='--tagged:60; --untagged:0'></td><td colspan='2'>Hybride (tagged/untagged)</td></tr>
+<tr><td class='interface poe'></td><td colspan='2'>Power on Ethernet</td></tr>
+<tr><td class='interface shutdown'></td><td colspan='2'>Interface désactivée</td></tr>
 </tbody>
 </table>
 </main>

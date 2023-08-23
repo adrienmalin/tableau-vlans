@@ -11,7 +11,7 @@ $conf = file_get_contents($path);
 preg_match("/ sysname ([\w-]+)/", $conf, $sysname);
 preg_match("/ip address ([\d.]+)/", $conf, $address);
 preg_match_all("/(?<=\n)vlan (?P<pvid>\d+)[\r\n]+(?: name (?P<name>.+)[\r\n]+| description (?P<description>.+)[\r\n]+| .*[\r\n]+)*/", $conf, $vlans, PREG_SET_ORDER);
-preg_match_all("/(?<=\n)interface [\w-]+(?P<member>\d+)\/0\/(?P<port>\d+)[\r\n]+(?: port hybrid vlan (?P<tagged>\d+) tagged[\r\n]+| port hybrid vlan (?P<untagged>\d+)(?: \d+)* untagged[\r\n]+| port (?P<linktype>access|trunk pvid|hybrid pvid) vlan (?P<pvid>\d+)[\r\n]+| (?P<poe>poe) enable[\r\n]+| (?P<shutdown>shutdown)[\r\n]+| .*[\r\n]+)*/", $conf, $interfaces, PREG_SET_ORDER);
+preg_match_all("/(?<=\n)interface [\w-]+(?P<member>\d+)\/0\/(?P<port>\d+)[\r\n]+(?: port hybrid (?:pvid )?vlan (?P<tagged>\d+) tagged[\r\n]+| port hybrid vlan (?P<untagged>\d+)(?: \d+)* untagged[\r\n]+| port (?P<linktype>(?:access |trunk |hybrid |pvid |vlan )*)(?P<pvid>\d+)[\r\n]+| (?P<poe>poe) enable[\r\n]+| (?P<shutdown>shutdown)[\r\n]+| .*[\r\n]+)*/", $conf, $interfaces, PREG_SET_ORDER);
 $stack = array();
 foreach ($interfaces as $interface) {
     if (!isset($stack[$interface["member"]])) {
@@ -19,6 +19,9 @@ foreach ($interfaces as $interface) {
     }
     $stack[$interface["member"]][$interface["port"]] = $interface;
 }
+echo ("<!--");
+var_dump($stack);
+echo ("-->");
 ?>
 <!DOCTYPE HTML>
 <html lang='fr'>
@@ -54,7 +57,7 @@ foreach ($stack as $member => $interfaces) {
 ?>
 </tbody>
 </table>
-<table class='vlans'>
+<table class='legend'>
 <caption><h2>Légende</h2></caption>
 <thead><tr><th>PVID</th><th>Nom</th><th>Description</th></tr></thead>
 <tbody>
@@ -63,7 +66,7 @@ foreach ($vlans as $vlan) {
     if (isset($vlan["pvid"]) and $vlan["pvid"] != 1) {
         $name = $vlan["name"] ?? "";
         $description = $vlan["description"] ?? "";
-        echo "<tr title='${vlan[0]}'><td class='interface pvid' style='--pvid: ${vlan["pvid"]}'>${vlan["pvid"]}</td><td>$name</td><td>$description</td></tr>";
+        echo "<tr title='${vlan[0]}'><td class='interface vlan' style='--pvid: ${vlan["pvid"]}'>${vlan["pvid"]}</td><td>$name</td><td>$description</td></tr>";
     }
 }
 ?>

@@ -1,6 +1,4 @@
 *{
-    color-adjust: exact;
-    -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
 }
 :root {
@@ -32,6 +30,7 @@ td {
     border: 2px inset;
 }
 .interface {
+    position: relative;
     text-align: center;
     min-width: 2em;
     height: 2em;
@@ -42,7 +41,6 @@ td {
     background-color: hsl(calc(var(--k)*var(--pvid)) 100% 60%);
 }
 .trunk {
-    position: relative;
     font-weight: bold;
     border: 4px solid !important;
     border-image-slice: 1 !important;
@@ -58,13 +56,17 @@ td {
     background-image: none !important;
     color: gray !important;
 }
-.poe {
-    position: relative;
-}
-.poe::after {
+.poe::before {
     content: "⚡";
     font-size: 0.7em;
     position: absolute;
     top: 0;
+    left: 0;
+}
+.voice-vlan::after {
+    content: "📞";
+    font-size: 0.7em;
+    position: absolute;
+    bottom: 0;
     left: 0;
 }

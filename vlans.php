@@ -77,6 +77,7 @@ foreach ($vlans as $vlan) {
 <tr><td class='interface trunk'></td><td colspan='2'>Trunk</td></tr>
 <tr><td class='interface hybrid' style='--tagged:60; --untagged:0'></td><td colspan='2'>Hybride (tagged/untagged)</td></tr>
 <tr><td class='interface poe'></td><td colspan='2'>Power on Ethernet</td></tr>
+<tr><td class='interface voice-vlan'></td><td colspan='2'>Voice-VLAN</td></tr>
 <tr><td class='interface shutdown'></td><td colspan='2'>Interface désactivée</td></tr>
 </tbody>
 </table>

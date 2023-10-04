@@ -1,6 +1,3 @@
-*{
-    print-color-adjust: exact;
-}
 :root {
     --k: 1353651.53435435;
 }
@@ -36,6 +33,7 @@ td {
     height: 2em;
     mix-blend-mode: darken;
     padding: 2px;
+    print-color-adjust: exact;
 }
 .vlan {
     background-color: hsl(calc(var(--k)*var(--pvid)) 100% 60%);

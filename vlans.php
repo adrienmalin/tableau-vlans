@@ -16,9 +16,9 @@ $stack = array();
 foreach ($interfaces as $interface) {
     if (!isset($stack[$interface["member"]])) $stack[$interface["member"]] = array();
     $interface["style"] = "";
-    if ($interface["pvid"]) $interface["style"] .= "--pvid: ${interface["pvid"]}; ";
-    if ($interface["tagged"]) $interface["style"] .= "--tagged: ${interface["tagged"]}; ";
-    if ($interface["untagged"]) $interface["style"] .= "--untagged: ${interface["untagged"]}; ";
+    if (!empty($interface["pvid"])) $interface["style"] .= "--pvid: ${interface["pvid"]}; ";
+    if (!empty($interface["tagged"])) $interface["style"] .= "--tagged: ${interface["tagged"]}; ";
+    if (!empty($interface["untagged"])) $interface["style"] .= "--untagged: ${interface["untagged"]}; ";
     $stack[$interface["member"]][$interface["port"]] = $interface;
 }
 

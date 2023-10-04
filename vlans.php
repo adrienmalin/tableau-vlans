@@ -11,17 +11,21 @@ $conf = file_get_contents($path);
 preg_match("/ sysname ([\w-]+)/", $conf, $sysname);
 preg_match("/ip address ([\d.]+)/", $conf, $address);
 preg_match_all("/(?<=\n)vlan (?P<pvid>\d+)[\r\n]+(?: name (?P<name>.+)[\r\n]+| description (?P<description>.+)[\r\n]+| .*[\r\n]+)*/", $conf, $vlans, PREG_SET_ORDER);
-preg_match_all("/(?<=\n)interface [\w-]+(?P<member>\d+)\/0\/(?P<port>\d+)[\r\n]+(?: port hybrid (?:pvid )?vlan (?P<tagged>\d+) tagged[\r\n]+| port hybrid vlan (?P<untagged>\d+)(?: \d+)* untagged[\r\n]+| port (?P<linktype>(?:access |trunk |hybrid |pvid |vlan )*)(?P<pvid>\d+)[\r\n]+| (?P<poe>poe) enable[\r\n]+| (?P<shutdown>shutdown)[\r\n]+| .*[\r\n]+)*/", $conf, $interfaces, PREG_SET_ORDER);
+preg_match_all("/(?<=\n)interface [\w-]+(?P<member>\d+)\/0\/(?P<port>\d+)[\r\n]+(?: port hybrid (?:pvid )?vlan (?:(?P<tagged>\d+) tagged|(?P<untagged>\d+)(?: \d+)* untagged)[\r\n]+| port (?:access |trunk |hybrid |pvid |vlan )*(?P<pvid>\d+)[\r\n]+| .*[\r\n]+)*(?<!#)/", $conf, $interfaces, PREG_SET_ORDER);
 $stack = array();
 foreach ($interfaces as $interface) {
-    if (!isset($stack[$interface["member"]])) {
-        $stack[$interface["member"]] = array();
-    }
+    if (!isset($stack[$interface["member"]])) $stack[$interface["member"]] = array();
+    $interface["style"] = "";
+    if ($interface["pvid"]) $interface["style"] .= "--pvid: ${interface["pvid"]}; ";
+    if ($interface["tagged"]) $interface["style"] .= "--tagged: ${interface["tagged"]}; ";
+    if ($interface["untagged"]) $interface["style"] .= "--untagged: ${interface["untagged"]}; ";
     $stack[$interface["member"]][$interface["port"]] = $interface;
 }
-echo ("<!--");
+
+/* echo ("<!--");
 var_dump($stack);
-echo ("-->");
+echo ("-->"); */
+
 ?>
 <!DOCTYPE HTML>
 <html lang='fr'>
@@ -43,7 +47,7 @@ echo ("-->");
 <?php
 function display_interface($interface, $odd) {
     if ($interface["port"] % 2 == $odd) {
-        echo "<td class='interface ${interface["shutdown"]} ${interface["linktype"]} ${interface["poe"]}' title='${interface[0]}' style='--pvid: ${interface["pvid"]}; --tagged: ${interface["tagged"]}; --untagged: ${interface["untagged"]};'>${interface["port"]}</td>\n";
+        echo "<td class='${interface[0]}' title='${interface[0]}' style='${interface["style"]}'>${interface["port"]}</td>\n";
     }
 }
 

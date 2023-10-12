@@ -82,5 +82,10 @@ foreach ($vlans as $vlan) {
 </tbody>
 </table>
 </main>
+<footer>  
+<label id="colorSliderLabel" for="colorSlider">Changer les couleurs</label>
+<input id="colorSlider" type="range" min="0" max="2000000" step="0.000000001" value="1353651.53435435"
+    oninput="document.documentElement.style.setProperty('--k', this.value);">
+</footer>
 </body>
 </html>

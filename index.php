@@ -28,7 +28,7 @@
                     if (count($cfgPaths)) {
                         $str .= "<ul>\n";
                         foreach ($cfgPaths as $conf) {
-                            $str .= "<li><a href='vlans.php?switch=" . str_replace($basedir.'/', "", $conf) . "'>" . basename($conf) . "</a></li>\n";
+                            $str .= "<li><a href='vlans.php?switch=" . str_replace($basedir.'/', "", $conf) . "' target='_blank'>" . basename($conf) . "</a></li>\n";
                         }
                         $str .= "</ul>\n";
                     }

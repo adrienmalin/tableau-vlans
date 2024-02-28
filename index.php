@@ -3,9 +3,12 @@
 <head>
 <title>Schémas des VLANs</title>
 <style>
-    ul {
-        list-style: none;
-    }
+ul {
+    list-style: none;
+}
+details {
+    cursor: pointer
+} 
 </style>
 </head>
 <body>

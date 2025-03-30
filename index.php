@@ -2,50 +2,50 @@
 <html lang='fr'>
 <head>
 <title>Schémas des VLANs</title>
-<style>
-ul {
-    list-style: none;
-}
-details {
-    cursor: pointer
-} 
-</style>
+<link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-<header>
+<div class="container">
 <h1>Schémas des VLANs</h1>
-</header>
-<main>
+<div class="file-list">
+<ul>
 <?php
     $basedir = __DIR__ . "/confs";
 
     function recursive_ls($path) {
         global $basedir;
-        $strdir = "";
-        foreach (scandir($path) as $filename) {
-            if (substr($filename, 0, 1) != '.') {
-                $fullpath = $path ."/". $filename;
-                if (is_dir($fullpath)) {
-                    $str = "";
-                    $cfgPaths = glob($fullpath . '/*.cfg');
-                    if (count($cfgPaths)) {
-                        $str .= "<ul>\n";
-                        foreach ($cfgPaths as $conf) {
-                            $str .= "<li><a href='vlans.php?switch=" . str_replace($basedir.'/', "", $conf) . "' target='_blank'>" . basename($conf) . "</a></li>\n";
-                        }
-                        $str .= "</ul>\n";
-                    }
-                    $str = recursive_ls($fullpath) . $str;
-                    if ($str != "") $strdir .= "<li>\n<details>\n<summary>" . $filename . "</summary>\n" . $str . "</details>\n</li>\n";;
+
+        if (substr(basename($path), 0, 1) == '.') {
+            return "";
+        }
+
+        if (is_dir($path)) {
+            $str = "";
+            foreach (scandir($path) as $filename) {
+                $str .= recursive_ls("$path/$filename");
+            }
+            if ($str == "") {
+                return "";
+            } else {
+                if ($path == $basedir) {
+                    return "<ul>\n$str\n</ul>\n";
+                } else {
+                    return "<li>\n<details>\n<summary>" . basename($path) . "</summary>\n<ul>\n" . $str . "</ul>\n</details>\n</li>\n";
                 }
             }
         }
-        if ($strdir != "") $strdir = "<ul>\n" . $strdir . "</ul>\n";
-        return $strdir;
+        
+        if (substr($path, -4) == ".cfg") {
+            return "<li><a href='vlans.php?switch=".str_replace("$basedir/", "", $path)."' target='_blank'>" . basename($path) . "</a></li>\n";
+        } 
+        
+        return "";
     }
 
     echo recursive_ls($basedir);
 ?>
-</main>
+</ul>
+</div>
+</div>
 </body>
 </html>

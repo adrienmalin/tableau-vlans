@@ -22,9 +22,9 @@ foreach ($interfaces as $interface) {
     $stack[$interface["member"]][$interface["port"]] = $interface;
 }
 
-echo ("<!--");
+/*echo ("<!--");
 var_dump($interfaces);
-echo ("-->");
+echo ("-->");*/
 
 ?>
 <!DOCTYPE HTML>
@@ -36,85 +36,89 @@ echo ("-->");
 </head>
 
 <body>
-    <header>
-        <h1>
-            <div><?= $sysname[1] ?? "Switch sans nom" ?></div>
-            <small><a href="https://<?= $address[1] ?>" target="_blank"><?= $address[1] ?></a></small>
-        </h1>
-    </header>
-    <main>
-        <table>
-            <caption>
-                <h2>Interfaces</h2>
-            </caption>
-            <tbody>
-                <?php
-                function display_interface($interface, $odd)
-                {
-                    if ($interface["port"] % 2 == $odd) {
-                        echo "<td class='{$interface[0]}" . (isset($interface["voice_vlan"]) ? " voice_vlan" : "") . "' title='{$interface[0]}' style='{$interface["style"]}'>{$interface["port"]}</td>\n";
-                    }
-                }
+    <div class="container">
+        <header>
+            <h1>
+                <div><?= $sysname[1] ?? "Switch sans nom" ?></div>
+                <small><a href="https://<?= $address[1] ?>" target="_blank" class="link"><?= $address[1] ?></a></small>
+            </h1>
+        </header>
 
-                foreach ($stack as $member => $interfaces) {
-                    echo "<tr>\n<th>$member</th>\n<td>\n<table class='member'>\n<tbody>\n<tr>\n";
-                    foreach ($interfaces as $interface) display_interface($interface, 1);
-                    echo "</tr>\n<tr>\n";
-                    foreach ($interfaces as $interface) display_interface($interface, 0);
-                    echo "</tr>\n</tbody>\n</table>\n</td>\n</tr>\n";
-                }
-                ?>
-            </tbody>
-        </table>
-        <table class='legend'>
-            <caption>
-                <h2>Légende</h2>
-            </caption>
-            <thead>
-                <tr>
-                    <th>PVID</th>
-                    <th>Nom</th>
-                    <th>Description</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                foreach ($vlans as $vlan) {
-                    if (isset($vlan["pvid"]) and $vlan["pvid"] != 1) {
-                        $name = $vlan["name"] ?? "";
-                        $description = $vlan["description"] ?? "";
-                        echo "<tr title='{$vlan[0]}'><td class='interface vlan' style='--pvid: {$vlan["pvid"]}'>{$vlan["pvid"]}</td><td>$name</td><td>$description</td></tr>";
+        <main>
+            <table>
+                <caption>
+                    <h2>Interfaces</h2>
+                </caption>
+                <tbody>
+                    <?php
+                    function display_interface($interface, $odd)
+                    {
+                        if ($interface["port"] % 2 == $odd) {
+                            echo "<td class='{$interface[0]}" . (isset($interface["voice_vlan"]) ? " voice_vlan" : "") . "' title='{$interface[0]}' style='{$interface["style"]}'>{$interface["port"]}</td>\n";
+                        }
                     }
-                }
-                ?>
-                <tr>
-                    <td class='interface trunk'></td>
-                    <td colspan='2'>Trunk</td>
-                </tr>
-                <tr>
-                    <td class='interface hybrid' style='--tagged:60; --untagged:0'></td>
-                    <td colspan='2'>Hybride (tagged/untagged)</td>
-                </tr>
-                <tr>
-                    <td class='interface poe'></td>
-                    <td colspan='2'>Power on Ethernet</td>
-                </tr>
-                <tr>
-                    <td class='interface voice_vlan'></td>
-                    <td colspan='2'>ToIP (voice-vlan)</td>
-                </tr>
-                <tr>
-                    <td class='interface shutdown'></td>
-                    <td colspan='2'>Interface désactivée</td>
-                </tr>
-            </tbody>
-        </table>
-    </main>
-    <footer>
-        <label id="colorSliderLabel" for="colorSlider">Changer les couleurs</label>
-        <input id="colorSlider" type="range" min="0" max="2000000" step="0.000000001" value="1353651.53435435"
-            oninput="document.documentElement.style.setProperty('--k', this.value);">
-    </footer>
+
+                    foreach ($stack as $member => $interfaces) {
+                        echo "<tr>\n<th>$member</th>\n<td>\n<table class='member'>\n<tbody>\n<tr>\n";
+                        foreach ($interfaces as $interface) display_interface($interface, 1);
+                        echo "</tr>\n<tr>\n";
+                        foreach ($interfaces as $interface) display_interface($interface, 0);
+                        echo "</tr>\n</tbody>\n</table>\n</td>\n</tr>\n";
+                    }
+                    ?>
+                </tbody>
+            </table>
+            <table class='legend'>
+                <caption>
+                    <h2>Légende</h2>
+                </caption>
+                <thead>
+                    <tr>
+                        <th>PVID</th>
+                        <th>Nom</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    foreach ($vlans as $vlan) {
+                        if (isset($vlan["pvid"]) and $vlan["pvid"] != 1) {
+                            $name = $vlan["name"] ?? "";
+                            $description = $vlan["description"] ?? "";
+                            echo "<tr title='{$vlan[0]}'><td class='interface vlan' style='--pvid: {$vlan["pvid"]}'>{$vlan["pvid"]}</td><td>$name</td><td>$description</td></tr>";
+                        }
+                    }
+                    ?>
+                    <tr>
+                        <td class='interface trunk'></td>
+                        <td colspan='2'>Trunk</td>
+                    </tr>
+                    <tr>
+                        <td class='interface hybrid' style='--tagged:60; --untagged:0'></td>
+                        <td colspan='2'>Hybride (tagged/untagged)</td>
+                    </tr>
+                    <tr>
+                        <td class='interface poe'></td>
+                        <td colspan='2'>Power on Ethernet</td>
+                    </tr>
+                    <tr>
+                        <td class='interface voice_vlan'></td>
+                        <td colspan='2'>ToIP (voice-vlan)</td>
+                    </tr>
+                    <tr>
+                        <td class='interface shutdown'></td>
+                        <td colspan='2'>Interface désactivée</td>
+                    </tr>
+                </tbody>
+            </table>
+        </main>
+        <footer>
+            <label id="colorSliderLabel" for="colorSlider">Changer les couleurs</label>
+            <input id="colorSlider" type="range" min="0" max="2000000" step="0.000000001" value="1353651.53435435"
+                oninput="document.documentElement.style.setProperty('--k', this.value);">
+            <a href="index.php" class="link">← Retour à la liste</a>
+        </footer>
+    </div>
 </body>
 
 </html>

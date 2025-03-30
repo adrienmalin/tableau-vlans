@@ -218,8 +218,7 @@ footer {
 }
 
 @media print {
-  #colorSliderLabel,
-  #colorSlider {
+  .no-print {
     display: none;
   }
 }

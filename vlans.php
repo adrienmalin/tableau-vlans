@@ -116,7 +116,8 @@ echo ("-->");*/
             <label id="colorSliderLabel" for="colorSlider">Changer les couleurs</label>
             <input id="colorSlider" type="range" min="0" max="2000000" step="0.000000001" value="1353651.53435435"
                 oninput="document.documentElement.style.setProperty('--k', this.value);">
-            <a href="index.php" class="link">← Retour à la liste</a>
+                <a href="<?=str_replace(__DIR__."/", "", $path) ?>" class="link">Télécharger la configuration</a>
+                <a href="index.php" class="link">← Retour à la liste</a>
         </footer>
     </div>
 </body>

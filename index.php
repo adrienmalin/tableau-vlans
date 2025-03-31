@@ -34,11 +34,11 @@
                 }
             }
         }
-        
+
         if (substr($path, -4) == ".cfg") {
-            return "<li><a href='vlans.php?switch=".str_replace("$basedir/", "", $path)."' target='_blank'>" . basename($path) . "</a></li>\n";
-        } 
-        
+            return "<li><a href='show.php?switch=".str_replace("$basedir/", "", $path)."' target='_blank'>" . basename($path) . "</a></li>\n";
+        }
+
         return "";
     }
 

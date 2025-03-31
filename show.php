@@ -14,16 +14,16 @@ preg_match_all("/(?<=\n)vlan (?P<pvid>\d+)[\r\n]+(?: name (?P<name>.+)[\r\n]+| d
 preg_match_all("/(?<=\n)interface [\w-]+(?P<member>\d+)\/0\/(?P<port>\d+)[\r\n]+(?: port hybrid (?:pvid )?vlan (?:(?P<tagged>\d+) tagged|(?P<untagged>\d+)(?: \d+)* untagged)[\r\n]+| port (?:access |trunk |hybrid |pvid |vlan )*(?P<pvid>\d+)[\r\n]+| voice-vlan (?P<voice_vlan>\d+) enable[\r\n]+| .*[\r\n]+)*(?<!#)/", $conf, $interfaces, PREG_SET_ORDER);
 $stack = array();
 foreach ($interfaces as $interface) {
-    if (!isset($stack[$interface["member"]])) $stack[$interface["member"]] = array();
+    if (!isset($stack[$interface["member"]])) $stack[$interface["member"]] = [[], []];
     $interface["style"] = "";
     if (!empty($interface["pvid"])) $interface["style"] .= "--pvid: {$interface["pvid"]}; ";
     if (!empty($interface["tagged"])) $interface["style"] .= "--tagged: {$interface["tagged"]}; ";
     if (!empty($interface["untagged"])) $interface["style"] .= "--untagged: {$interface["untagged"]}; ";
-    $stack[$interface["member"]][$interface["port"]] = $interface;
+    $stack[$interface["member"]][1 - $interface["port"] % 2][$interface["port"]] = $interface;
 }
 
 /*echo ("<!--");
-var_dump($interfaces);
+var_dump($stack);
 echo ("-->");*/
 
 ?>
@@ -51,18 +51,15 @@ echo ("-->");*/
                 </caption>
                 <tbody>
                     <?php
-                    function display_interface($interface, $odd)
-                    {
-                        if ($interface["port"] % 2 == $odd) {
-                            echo "<td class='{$interface[0]}" . (isset($interface["voice_vlan"]) ? " voice_vlan" : "") . "' title='{$interface[0]}' style='{$interface["style"]}'>{$interface["port"]}</td>\n";
+                    foreach ($stack as $member => $lines) {
+                        echo "<tr>\n<th>$member</th>\n<td>\n<table class='member'>\n<tbody>\n";
+                        foreach ($lines as $interfaces) {
+                            echo "<tr>\n";
+                            foreach ($interfaces as $interface) {
+                                echo "<td class='{$interface[0]}" . (isset($interface["voice_vlan"]) ? " voice_vlan" : "") . "' title='{$interface[0]}' style='{$interface["style"]}'>{$interface["port"]}</td>\n";
+                            };
+                            echo "</tr>\n";
                         }
-                    }
-
-                    foreach ($stack as $member => $interfaces) {
-                        echo "<tr>\n<th>$member</th>\n<td>\n<table class='member'>\n<tbody>\n<tr>\n";
-                        foreach ($interfaces as $interface) display_interface($interface, 1);
-                        echo "</tr>\n<tr>\n";
-                        foreach ($interfaces as $interface) display_interface($interface, 0);
                         echo "</tr>\n</tbody>\n</table>\n</td>\n</tr>\n";
                     }
                     ?>

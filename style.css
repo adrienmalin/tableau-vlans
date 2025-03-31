@@ -131,9 +131,12 @@ td {
   border: 2px solid black;
 }
 
-.member td,
-.legend td {
+.member td {
   border: 2px inset #2c3e50;
+}
+
+.legend td {
+  border: 1px inset #2c3e50;
 }
 
 .interface {

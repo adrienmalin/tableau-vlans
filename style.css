@@ -153,11 +153,11 @@ td {
 .vlan {
   color: #ecf0f1;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-  background-color: hsl(calc(var(--k) * var(--pvid)) 97% 60%);
+  background-color: hsl(calc(var(--k) * var(--pvid)) 97% 65%);
 }
 
 .vlan:hover {
-  background-color: hsl(calc(var(--k) * var(--pvid)) 65% 70%);
+  background-color: hsl(calc(var(--k) * var(--pvid)) 65% 75%);
 }
 
 .trunk {
@@ -179,16 +179,16 @@ td {
 .hybrid {
   background-image: linear-gradient(
     135deg,
-    hsl(calc(var(--k) * var(--tagged)) 97% 60%) 50%,
-    hsl(calc(var(--k) * var(--untagged)) 97% 60%) 50%
+    hsl(calc(var(--k) * var(--tagged)) 97% 65%) 50%,
+    hsl(calc(var(--k) * var(--untagged)) 97% 65%) 50%
   );
 }
 
 .hybrid:hover {
   background-image: linear-gradient(
     135deg,
-    hsl(calc(var(--k) * var(--tagged)) 65% 70%) 50%,
-    hsl(calc(var(--k) * var(--untagged)) 65% 70%) 50%
+    hsl(calc(var(--k) * var(--tagged)) 65% 75%) 50%,
+    hsl(calc(var(--k) * var(--untagged)) 65% 75%) 50%
   );
 }
 

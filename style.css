@@ -96,6 +96,7 @@ main {
   display: flex;
   flex-flow: wrap;
   gap: 1rem;
+  margin-bottom: 2rem;
 }
 
 ul {

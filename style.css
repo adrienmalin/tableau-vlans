@@ -160,6 +160,7 @@ td {
 }
 
 .vlan {
+  --pvid: 0;
   color: #ecf0f1;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
   background-color: hsl(calc(var(--k) * var(--pvid)) 97% 65%);
@@ -186,7 +187,10 @@ td {
 }
 
 .hybrid {
-  background-image: linear-gradient(
+  --tagged: 0;
+  --untagged: 0;
+  background-image: url('data:image/svg+xml;utf8,<svg width="20" height="20" viewBox="0 0 5.2916665 5.2916666" version="1.1" id="svg1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"><defs id="defs1" /><g id="layer1"><path id="rect1" style="fill:%232c3e50;fill-opacity:1;stroke-width:0.070003" d="M 0,0 V 5.2916667 H 5.2916667 V 0 Z m 2.2245153,0.26456284 h 0.9264484 c 0.1791197,0 0.3233547,0.17861648 0.3233547,0.40046728 v 0.0861369 h 1.1373691 c 0.2740052,0 0.4152798,0.19374878 0.4152798,0.53312048 v 2.9297312 c 0,0.339372 -0.1412746,0.5329357 -0.4152798,0.5329357 H 0.67997917 c -0.27400514,0 -0.41541633,-0.1935637 -0.41541633,-0.5329357 V 1.2842875 c 0,-0.3393717 0.14141119,-0.53312052 0.41541633,-0.53312052 H 1.9011608 v -0.0861369 c 0,-0.2218508 0.1442347,-0.40046728 0.3233545,-0.40046724 z" /></g></svg>'),
+    linear-gradient(
     135deg,
     hsl(calc(var(--k) * var(--tagged)) 97% 65%) 50%,
     hsl(calc(var(--k) * var(--untagged)) 97% 65%) 50%
@@ -194,7 +198,8 @@ td {
 }
 
 .hybrid:hover {
-  background-image: linear-gradient(
+  background-image:  url('data:image/svg+xml;utf8,<svg width="20" height="20" viewBox="0 0 5.2916665 5.2916666" version="1.1" id="svg1" xml:space="preserve" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg"><defs id="defs1" /><g id="layer1"><path id="rect1" style="fill:%232c3e50;fill-opacity:1;stroke-width:0.070003" d="M 0,0 V 5.2916667 H 5.2916667 V 0 Z m 2.2245153,0.26456284 h 0.9264484 c 0.1791197,0 0.3233547,0.17861648 0.3233547,0.40046728 v 0.0861369 h 1.1373691 c 0.2740052,0 0.4152798,0.19374878 0.4152798,0.53312048 v 2.9297312 c 0,0.339372 -0.1412746,0.5329357 -0.4152798,0.5329357 H 0.67997917 c -0.27400514,0 -0.41541633,-0.1935637 -0.41541633,-0.5329357 V 1.2842875 c 0,-0.3393717 0.14141119,-0.53312052 0.41541633,-0.53312052 H 1.9011608 v -0.0861369 c 0,-0.2218508 0.1442347,-0.40046728 0.3233545,-0.40046724 z" /></g></svg>'),
+    linear-gradient(
     135deg,
     hsl(calc(var(--k) * var(--tagged)) 65% 75%) 50%,
     hsl(calc(var(--k) * var(--untagged)) 65% 75%) 50%
@@ -210,16 +215,16 @@ td {
   content: "⚡";
   font-size: 0.65em;
   position: absolute;
-  top: -0.2em;
-  right: -0.25em;
+  top: 0.2em;
+  right: 0.2em;
 }
 
 .voice_vlan::after {
   content: "📞";
   font-size: 0.65em;
   position: absolute;
-  bottom: -0.15em;
-  left: 0;
+  bottom: 0.2em;
+  left: 0.2em;
 }
 
 .legend {

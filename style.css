@@ -254,6 +254,10 @@ footer {
 }
 
 @media print {
+  * {
+    overflow: visible !important;
+  }
+
   .no-print {
     display: none;
   }

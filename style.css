@@ -217,6 +217,8 @@ td {
 .shutdown:not([class*="loopback-detection action shutdown"]) {
   background-color: lightgray;
   color: gray !important;
+  font-weight: normal;
+  text-shadow: none;
 }
 
 .poe::before {

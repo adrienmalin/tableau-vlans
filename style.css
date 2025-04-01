@@ -174,7 +174,7 @@ td {
 .vlan {
   --pvid: 0;
   color: #ecf0f1;
-  text-shadow: 0 1px 3px black;
+  text-shadow: 0 1px 2px black;
   background-color: hsl(
     calc(var(--hue) * var(--pvid)) var(--saturation) var(--lightness)
   );

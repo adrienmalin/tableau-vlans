@@ -45,26 +45,22 @@ echo ("-->");*/
         </header>
 
         <main>
-            <table>
-                <caption>
-                    <h2>Interfaces</h2>
-                </caption>
-                <tbody>
-                    <?php
-                    foreach ($stack as $member => $lines) {
-                        echo "<tr>\n<th>$member</th>\n<td>\n<table class='member'>\n<tbody>\n";
-                        foreach ($lines as $interfaces) {
-                            echo "<tr>\n";
-                            foreach ($interfaces as $interface) {
-                                echo "<td class='{$interface[0]}" . (isset($interface["voice_vlan"]) ? " voice_vlan" : "") . "' title='{$interface[0]}' style='{$interface["style"]}'>{$interface["port"]}</td>\n";
-                            };
-                            echo "</tr>\n";
-                        }
-                        echo "</tr>\n</tbody>\n</table>\n</td>\n</tr>\n";
+            <div class="stack">
+                <h2>Interfaces</h2>
+                <?php
+                foreach ($stack as $member_id => $lines) {
+                    echo "<div class='member'>\n<span class='member-id'>$member_id</span>\n<table class='interfaces'>\n<tbody>\n";
+                    foreach ($lines as $interfaces) {
+                        echo "<tr>\n";
+                        foreach ($interfaces as $interface) {
+                            echo "<td class='{$interface[0]}" . (isset($interface["voice_vlan"]) ? " voice_vlan" : "") . "' title='{$interface[0]}' style='{$interface["style"]}'>{$interface["port"]}</td>\n";
+                        };
+                        echo "</tr>\n";
                     }
-                    ?>
-                </tbody>
-            </table>
+                    echo "</tr>\n</tbody>\n</table>\n</div>\n";
+                }
+                ?>
+            </div>
             <table class='legend'>
                 <caption>
                     <h2>Légende</h2>

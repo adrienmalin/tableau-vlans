@@ -1,5 +1,7 @@
 :root {
-  --k: 1353651.53435435;
+  --hue: 1353651.53435435;
+  --saturation: 97%;
+  --lightness: 65%;
 }
 
 * {
@@ -117,22 +119,23 @@ td {
 
 .member {
   display: flex;
+  align-items: center;
   border: 8px outset #476079;
   border-radius: 6px;
   background-color: #34495e;
-  margin-bottom: .5rem;
+  margin-bottom: 0.5rem;
 }
 
 .member-id {
   background: #777;
   align-content: center;
   color: lightgreen;
+  text-shadow: 0 1px 3px #fffb;
   font-weight: bold;
-  border: 1px inset black;
-  font-family: monospace;
-  font-size: 1.3em;
+  border: 2px inset black;
+  font-family: "Small Fonts", "Courier", monospace;
   margin: 1em 0.5em;
-  padding: 0.2em 0.4em;
+  padding: 0.12em 0.4em;
 }
 
 .interfaces {
@@ -144,40 +147,45 @@ td {
 .interface {
   position: relative;
   text-align: center;
+  vertical-align: middle;
   min-width: 2em;
   height: 2em;
   mix-blend-mode: darken;
   print-color-adjust: exact;
   cursor: help;
   transition: 0.2s background-color;
-  background-image: url(rj45.svg);
-  background-size: cover;
-  padding-top: 0.2em;
+  border: 4px solid;
+  border-image-slice: 3;
+  border-image-source: url(rj45.svg);
+  border-image-repeat: stretch;
+  background-color: white;
 }
 
 .member tr:nth-child(even) .interface {
-  background-image: url(rj45-inverse.svg);
-  padding-top: 0;
+  border-image-source: url(rj45-inverse.svg);
 }
 
-.interface:hover {
+.interface:not(.vlan):hover {
   background-color: #ddd;
 }
 
 .vlan {
   --pvid: 0;
   color: #ecf0f1;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
-  background-color: hsl(calc(var(--k) * var(--pvid)) 97% 65%);
+  text-shadow: 0 1px 3px black;
+  background-color: hsl(
+    calc(var(--hue) * var(--pvid)) var(--saturation) var(--lightness)
+  );
 }
 
 .vlan:hover {
-  background-color: hsl(calc(var(--k) * var(--pvid)) 65% 75%);
+  --saturation: 65%;
+  --lightness: 75%;
 }
 
 .trunk:not(.shutdown) {
   font-weight: bold;
-  border: 4px solid !important;
+  border: 3px solid;
   border-image-slice: 1 !important;
   border-image-source: linear-gradient(
     127deg,
@@ -188,45 +196,20 @@ td {
     blue,
     violet
   ) !important;
-  padding: 0;
 }
 
 .hybrid {
   --tagged: 0;
-  --untagged: 0;
-  background-image: url(rj45.svg),
-    linear-gradient(
+  --untagged: var(--pvid);
+  background-image: linear-gradient(
     135deg,
-    hsl(calc(var(--k) * var(--tagged)) 97% 65%) 50%,
-    hsl(calc(var(--k) * var(--untagged)) 97% 65%) 50%
+    hsl(calc(var(--hue) * var(--tagged)) var(--saturation) var(--lightness)) 50%,
+    hsl(calc(var(--hue) * var(--untagged)) var(--saturation) var(--lightness))
+      50%
   );
-}
-
-.member tr:nth-child(even) .hybrid {
-  background-image: url(rj45-inverse.svg),
-    linear-gradient(
-    135deg,
-    hsl(calc(var(--k) * var(--tagged)) 97% 65%) 50%,
-    hsl(calc(var(--k) * var(--untagged)) 97% 65%) 50%
-  );
-}
-
-.hybrid:hover {
-  background-image:  url(rj45.svg),
-    linear-gradient(
-    135deg,
-    hsl(calc(var(--k) * var(--tagged)) 65% 75%) 50%,
-    hsl(calc(var(--k) * var(--untagged)) 65% 75%) 50%
-  );
-}
-
-.member tr:nth-child(even) .hybrid:hover {
-  background-image:  url(rj45-inverse.svg),
-    linear-gradient(
-    135deg,
-    hsl(calc(var(--k) * var(--tagged)) 65% 75%) 50%,
-    hsl(calc(var(--k) * var(--untagged)) 65% 75%) 50%
-  );
+  background-size: cover;
+  background-position: center;
+  background-origin: border-box;
 }
 
 .shutdown:not([class*="loopback-detection action shutdown"]) {
@@ -236,26 +219,26 @@ td {
 
 .poe::before {
   content: "⚡";
-  font-size: 0.65em;
+  font-size: 0.7em;
   position: absolute;
-  top: 0.2em;
-  right: 0.2em;
+  top: -0.7em;
+  right: -0.7em;
 }
 
 .voice_vlan::after {
   content: "📞";
-  font-size: 0.65em;
+  font-size: 0.7em;
   position: absolute;
-  bottom: 0.2em;
-  left: 0.2em;
+  bottom: -0.5em;
+  left: -0.5em;
 }
 
 .legend {
   border-spacing: 0;
 }
 
-.legend td {
-  border: 1px inset #2c3e50;
+.legend td:not(.interface) {
+  border: 1px solid #2c3e50;
 }
 
 footer {

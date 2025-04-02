@@ -1,5 +1,5 @@
 :root {
-  --hue: 15;
+  --hue: 58.3;
   --saturation: 80%;
   --lightness: 65%;
 }
@@ -8,19 +8,17 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  overflow: visible !important;
 }
 
 body {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
   font-family: Arial, sans-serif;
   line-height: 1.6;
   background-color: #f5f5f5;
   color: #333;
-}
-
-.container {
-  max-width: 1200px;
-  margin: 2rem auto;
-  padding: 0 1rem;
 }
 
 h1 {
@@ -97,8 +95,11 @@ h2 {
 main {
   display: flex;
   flex-flow: wrap;
-  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+  row-gap: 1rem;
   margin-bottom: 2rem;
+  width: 100%;
 }
 
 ul {
@@ -107,10 +108,6 @@ ul {
 
 details {
   cursor: pointer;
-}
-
-main > table {
-  margin: auto;
 }
 
 td {
@@ -151,7 +148,6 @@ td {
   vertical-align: middle;
   min-width: 2em;
   height: 2em;
-  mix-blend-mode: darken;
   cursor: help;
   transition: 0.2s background-color;
   border: 2px inset #476079;
@@ -223,7 +219,6 @@ td {
 
 .poe::before {
   content: "⚡";
-  font-size: 0.7em;
   position: absolute;
   top: -0.5em;
   right: -0.5em;
@@ -231,10 +226,9 @@ td {
 
 .voice_vlan::after {
   content: "📞";
-  font-size: 0.7em;
   position: absolute;
-  bottom: -0.5em;
-  left: -0.5em;
+  bottom: -0.4em;
+  left: -0.3em;
 }
 
 .legend {
@@ -256,10 +250,6 @@ footer {
 }
 
 @media print {
-  * {
-    overflow: visible !important;
-  }
-
   .no-print {
     display: none;
   }

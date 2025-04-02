@@ -1,31 +1,41 @@
 <?php
-$basedir = __DIR__ . "/confs/";
-$path = realpath($basedir . filter_input(INPUT_GET, "switch", FILTER_SANITIZE_STRING));
-if (strpos($path, $basedir) !== 0 || substr($path, -4) != ".cfg") {
-    header('HTTP/1.1 404 Not Found');
-    die();
-}
+    $basedir = __DIR__ . "/confs/";
+    $path = realpath($basedir . filter_input(INPUT_GET, "switch", FILTER_SANITIZE_STRING));
+    if (strpos($path, $basedir) !== 0 || substr($path, -4) != ".cfg") {
+        header('HTTP/1.1 404 Not Found');
+        die();
+    }
 
-$conf = file_get_contents($path);
+    $conf = file_get_contents($path);
 
-preg_match("/ sysname ([\w-]+)/", $conf, $sysname);
-preg_match("/ip address ([\d.]+)/", $conf, $address);
-preg_match_all("/(?<=\n)vlan (?P<pvid>\d+)[\r\n]+(?: name (?P<name>.+)[\r\n]+| description (?P<description>.+)[\r\n]+| .*[\r\n]+)*/", $conf, $vlans, PREG_SET_ORDER);
-preg_match_all("/(?<=\n)interface [\w-]+(?P<member>\d+)\/0\/(?P<port>\d+)[\r\n]+(?: port hybrid (?:pvid )?vlan (?:(?P<tagged>\d+)(?: [0-9a-z ]*)? tagged|(?P<untagged>\d+)(?: \d+)* untagged)[\r\n]+| port (?:access |trunk |hybrid |pvid |vlan )*(?P<pvid>\d+)[\r\n]+| voice-vlan (?P<voice_vlan>\d+) enable[\r\n]+| .*[\r\n]+)*(?<!#)/", $conf, $interfaces, PREG_SET_ORDER);
-$stack = array();
-foreach ($interfaces as $interface) {
-    if (!isset($stack[$interface["member"]])) $stack[$interface["member"]] = [[], []];
-    $interface["style"] = "";
-    if (!empty($interface["pvid"])) $interface["style"] .= "--pvid: {$interface["pvid"]}; ";
-    if (!empty($interface["tagged"])) $interface["style"] .= "--tagged: {$interface["tagged"]}; ";
-    if (!empty($interface["untagged"])) $interface["style"] .= "--untagged: {$interface["untagged"]}; ";
-    $stack[$interface["member"]][1 - $interface["port"] % 2][$interface["port"]] = $interface;
-}
+    preg_match("/ sysname ([\w-]+)/", $conf, $sysname);
+    preg_match("/ip address ([\d.]+)/", $conf, $address);
+    $startPattern           = "(?<=\n)";
+    $NLPattern              = "[\r\n]+";
+    $vlanPvidPattern        = "vlan (?P<pvid>\d+)$NLPattern";
+    $vlanNamePattern        = " name (?P<name>.+)$NLPattern";
+    $vlanDescriptionPattern = " description (?P<description>.+)$NLPattern";
+    $otherPattern           = " .*$NLPattern";
+    $endPattern             = "(?<!#)";
+    preg_match_all("/$startPattern$vlanPvidPattern(?:$vlanNamePattern|$vlanDescriptionPattern|$otherPattern)*$endPattern/", $conf, $vlans, PREG_SET_ORDER);
+    $interfaceAddressPattern = "interface [\w-]+(?P<member>\d+)\/0\/(?P<port>\d+)$NLPattern";
+    $portHybridPattern       = " port hybrid (?:pvid )?vlan (?:(?P<tagged>\d+)(?: [0-9a-z ]*)? tagged|(?P<untagged>\d+)(?: \d+)* untagged)$NLPattern";
+    $portAccessPattern       = " port (?:access |trunk |hybrid |pvid |vlan )*(?P<pvid>\d+)$NLPattern";
+    $voiceVlanPattern        = " voice-vlan (?P<voice_vlan>\d+) enable$NLPattern";
+    preg_match_all("/$startPattern$interfaceAddressPattern(?:$portHybridPattern|$portAccessPattern|$voiceVlanPattern|$otherPattern)*$endPattern/", $conf, $interfaces, PREG_SET_ORDER);
+    $stack = array();
+    foreach ($interfaces as $interface) {
+        if (!isset($stack[$interface["member"]])) $stack[$interface["member"]] = [[], []];
+        $interface["style"] = "";
+        if (!empty($interface["pvid"])) $interface["style"] .= "--pvid: {$interface["pvid"]}; ";
+        if (!empty($interface["tagged"])) $interface["style"] .= "--tagged: {$interface["tagged"]}; ";
+        if (!empty($interface["untagged"])) $interface["style"] .= "--untagged: {$interface["untagged"]}; ";
+        $stack[$interface["member"]][1 - $interface["port"] % 2][$interface["port"]] = $interface;
+    }
 
-/*echo ("<!--");
-var_dump($stack);
-echo ("-->");*/
-
+    /*echo ("<!--");
+    var_dump($stack);
+    echo ("-->");*/
 ?>
 <!DOCTYPE HTML>
 <html lang='fr'>

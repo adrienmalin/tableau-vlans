@@ -11,7 +11,7 @@ $conf = file_get_contents($path);
 preg_match("/ sysname ([\w-]+)/", $conf, $sysname);
 preg_match("/ip address ([\d.]+)/", $conf, $address);
 preg_match_all("/(?<=\n)vlan (?P<pvid>\d+)[\r\n]+(?: name (?P<name>.+)[\r\n]+| description (?P<description>.+)[\r\n]+| .*[\r\n]+)*/", $conf, $vlans, PREG_SET_ORDER);
-preg_match_all("/(?<=\n)interface [\w-]+(?P<member>\d+)\/0\/(?P<port>\d+)[\r\n]+(?: port hybrid (?:pvid )?vlan (?:(?P<tagged>\d+)(?: [0-9a-z ]*) tagged|(?P<untagged>\d+)(?: \d+)* untagged)[\r\n]+| port (?:access |trunk |hybrid |pvid |vlan )*(?P<pvid>\d+)[\r\n]+| voice-vlan (?P<voice_vlan>\d+) enable[\r\n]+| .*[\r\n]+)*(?<!#)/", $conf, $interfaces, PREG_SET_ORDER);
+preg_match_all("/(?<=\n)interface [\w-]+(?P<member>\d+)\/0\/(?P<port>\d+)[\r\n]+(?: port hybrid (?:pvid )?vlan (?:(?P<tagged>\d+)(?: [0-9a-z ]*)? tagged|(?P<untagged>\d+)(?: \d+)* untagged)[\r\n]+| port (?:access |trunk |hybrid |pvid |vlan )*(?P<pvid>\d+)[\r\n]+| voice-vlan (?P<voice_vlan>\d+) enable[\r\n]+| .*[\r\n]+)*(?<!#)/", $conf, $interfaces, PREG_SET_ORDER);
 $stack = array();
 foreach ($interfaces as $interface) {
     if (!isset($stack[$interface["member"]])) $stack[$interface["member"]] = [[], []];

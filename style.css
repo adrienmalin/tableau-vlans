@@ -170,6 +170,19 @@ main {
 
 .trunk:not(.shutdown) {
   font-weight: bold;
+  background-image: linear-gradient(
+    127deg,
+    red,
+    orange,
+    yellow,
+    green,
+    blue,
+    violet
+  ) !important;
+}
+
+/*.trunk:not(.shutdown) {
+  font-weight: bold;
   border: 4px solid;
   border-image-slice: 1 !important;
   border-image-source: linear-gradient(
@@ -181,9 +194,9 @@ main {
     blue,
     violet
   ) !important;
-}
+}*/
 
-.hybrid {
+/*.hybrid {
   --tagged: 0;
   --untagged: var(--pvid);
   background-image: linear-gradient(
@@ -195,7 +208,7 @@ main {
   background-size: cover;
   background-position: center;
   background-origin: border-box;
-}
+}*/
 
 .shutdown:not([class*="loopback-detection action shutdown"]) {
   background-color: lightgray;
@@ -214,7 +227,7 @@ main {
 .voice_vlan::after {
   content: "📞";
   position: absolute;
-  bottom: -0.5em;
+  bottom: -0.4em;
   left: -0.4em;
 }
 

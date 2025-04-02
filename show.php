@@ -19,10 +19,11 @@ $otherPattern           = " .*$NLP";
 $endPattern             = "(?<!#)";
 preg_match_all("/$startPattern$vlanPvidPattern(?:$vlanNamePattern|$vlanDescriptionPattern|$otherPattern)*$endPattern/", $conf, $vlans, PREG_SET_ORDER);
 $interfaceAddressPattern = "interface [\w-]+(?P<member>\d+)\/0\/(?P<port>\d+)$NLP";
-$portHybridPattern       = " port hybrid (?:pvid )?vlan (?:(?P<tagged>\d+)(?: [0-9a-z ]*)? tagged|(?P<untagged>\d+)(?: \d+)* untagged)$NLP";
 $portAccessPattern       = " port (?:access |trunk |hybrid |pvid |vlan )*(?P<pvid>\d+)$NLP";
+$portHybridPattern       = " port hybrid (?:pvid )?vlan (?:(?P<tagged>\d+)(?: [0-9a-z ]*)? tagged|(?P<untagged>\d+)(?: \d+)* untagged)$NLP";
 $voiceVlanPattern        = " voice-vlan (?P<voice_vlan>\d+) enable$NLP";
-preg_match_all("/$startPattern$interfaceAddressPattern(?:$portHybridPattern|$portAccessPattern|$voiceVlanPattern|$otherPattern)*$endPattern/", $conf, $interfaces, PREG_SET_ORDER);
+preg_match_all("/$startPattern$interfaceAddressPattern(?:$portAccessPattern|$portHybridPattern|$voiceVlanPattern|$otherPattern)*$endPattern/", $conf, $interfaces, PREG_SET_ORDER);
+
 $stack = array();
 foreach ($interfaces as $interface) {
     if (!isset($stack[$interface["member"]])) $stack[$interface["member"]] = [[], []];
@@ -30,12 +31,13 @@ foreach ($interfaces as $interface) {
     if (!empty($interface["pvid"])) $interface["style"] .= "--pvid: {$interface["pvid"]}; ";
     if (!empty($interface["tagged"])) $interface["style"] .= "--tagged: {$interface["tagged"]}; ";
     if (!empty($interface["untagged"])) $interface["style"] .= "--untagged: {$interface["untagged"]}; ";
+    if (!empty($interface["voice_vlan"])) $interface["style"] .= "--voice-vlan: {$interface["voice_vlan"]}; ";
     $stack[$interface["member"]][1 - $interface["port"] % 2][$interface["port"]] = $interface;
 }
 
 /*echo ("<!--");
-    var_dump($stack);
-    echo ("-->");*/
+var_dump($stack);
+echo ("-->");*/
 ?>
 <!DOCTYPE HTML>
 <html lang='fr'>
@@ -96,10 +98,10 @@ foreach ($interfaces as $interface) {
                     <td class='interface trunk'></td>
                     <td colspan='2'>Trunk</td>
                 </tr>
-                <tr>
+                <!--<tr>
                     <td class='interface hybrid' style='--tagged:60; --untagged:0'></td>
                     <td colspan='2'>Hybride (tagged/untagged)</td>
-                </tr>
+                </tr>-->
                 <tr>
                     <td class='interface poe'></td>
                     <td colspan='2'>Power on Ethernet</td>

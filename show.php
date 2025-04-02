@@ -11,17 +11,17 @@ $conf = file_get_contents($path);
 preg_match("/ sysname ([\w-]+)/", $conf, $sysname);
 preg_match("/ip address ([\d.]+)/", $conf, $address);
 $startPattern           = "(?<=\n)";
-$NLPattern              = "[\r\n]+";
-$vlanPvidPattern        = "vlan (?P<pvid>\d+)$NLPattern";
-$vlanNamePattern        = " name (?P<name>.+)$NLPattern";
-$vlanDescriptionPattern = " description (?P<description>.+)$NLPattern";
-$otherPattern           = " .*$NLPattern";
+$NLP                    = "[\r\n]+";
+$vlanPvidPattern        = "vlan (?P<pvid>\d+)$NLP";
+$vlanNamePattern        = " name (?P<name>.+)$NLP";
+$vlanDescriptionPattern = " description (?P<description>.+)$NLP";
+$otherPattern           = " .*$NLP";
 $endPattern             = "(?<!#)";
 preg_match_all("/$startPattern$vlanPvidPattern(?:$vlanNamePattern|$vlanDescriptionPattern|$otherPattern)*$endPattern/", $conf, $vlans, PREG_SET_ORDER);
-$interfaceAddressPattern = "interface [\w-]+(?P<member>\d+)\/0\/(?P<port>\d+)$NLPattern";
-$portHybridPattern       = " port hybrid (?:pvid )?vlan (?:(?P<tagged>\d+)(?: [0-9a-z ]*)? tagged|(?P<untagged>\d+)(?: \d+)* untagged)$NLPattern";
-$portAccessPattern       = " port (?:access |trunk |hybrid |pvid |vlan )*(?P<pvid>\d+)$NLPattern";
-$voiceVlanPattern        = " voice-vlan (?P<voice_vlan>\d+) enable$NLPattern";
+$interfaceAddressPattern = "interface [\w-]+(?P<member>\d+)\/0\/(?P<port>\d+)$NLP";
+$portHybridPattern       = " port hybrid (?:pvid )?vlan (?:(?P<tagged>\d+)(?: [0-9a-z ]*)? tagged|(?P<untagged>\d+)(?: \d+)* untagged)$NLP";
+$portAccessPattern       = " port (?:access |trunk |hybrid |pvid |vlan )*(?P<pvid>\d+)$NLP";
+$voiceVlanPattern        = " voice-vlan (?P<voice_vlan>\d+) enable$NLP";
 preg_match_all("/$startPattern$interfaceAddressPattern(?:$portHybridPattern|$portAccessPattern|$voiceVlanPattern|$otherPattern)*$endPattern/", $conf, $interfaces, PREG_SET_ORDER);
 $stack = array();
 foreach ($interfaces as $interface) {
@@ -60,6 +60,7 @@ foreach ($interfaces as $interface) {
             foreach ($stack as $member_id => $lines) {
                 echo "<div class='member'>\n<span class='member-id'>$member_id</span>\n<table class='interfaces'>\n<tbody>\n";
                 foreach ($lines as $interfaces) {
+                    ksort($interfaces);
                     echo "<tr>\n";
                     foreach ($interfaces as $interface) {
                         echo "<td class='{$interface[0]}" . (isset($interface["voice_vlan"]) ? " voice_vlan" : "") . "' title='{$interface[0]}' style='{$interface["style"]}'>{$interface["port"]}</td>\n";

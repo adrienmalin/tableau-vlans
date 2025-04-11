@@ -19,10 +19,10 @@ $otherPattern           = " .*$NLP";
 $endPattern             = "(?<!#)";
 preg_match_all("/$startPattern$vlanPvidPattern(?:$vlanNamePattern|$vlanDescriptionPattern|$otherPattern)*$endPattern/", $conf, $vlans, PREG_SET_ORDER);
 $interfaceAddressPattern = "interface [\w-]+(?P<member>\d+)\/0\/(?P<port>\d+)$NLP";
-$portAccessPattern       = " port (?:access |trunk |hybrid |pvid |vlan )*(?P<pvid>\d+)$NLP";
+$pvidPattern             = " port (?:access vlan|trunk pvid) (?P<pvid>\d+)$NLP";
 $portHybridPattern       = " port hybrid (?:pvid )?vlan (?:(?P<tagged>\d+)(?: [0-9a-z ]*)? tagged|(?P<untagged>\d+)(?: \d+)* untagged)$NLP";
 $voiceVlanPattern        = " voice-vlan (?P<voice_vlan>\d+) enable$NLP";
-preg_match_all("/$startPattern$interfaceAddressPattern(?:$portAccessPattern|$portHybridPattern|$voiceVlanPattern|$otherPattern)*$endPattern/", $conf, $interfaces, PREG_SET_ORDER);
+preg_match_all("/$startPattern$interfaceAddressPattern(?:$pvidPattern|$portHybridPattern|$voiceVlanPattern|$otherPattern)*$endPattern/", $conf, $interfaces, PREG_SET_ORDER);
 
 $stack = array();
 foreach ($interfaces as $interface) {

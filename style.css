@@ -145,6 +145,9 @@ main {
   border-image-repeat: stretch;
   background-color: white;
   print-color-adjust: exact;
+  background-size: cover;
+  background-position: center;
+  background-origin: border-box;
 }
 
 .member tr:nth-child(even) .interface {
@@ -180,23 +183,16 @@ main {
     blue,
     violet
   );
-  background-size: cover;
-  background-position: center;
-  background-origin: border-box;
 }
 
-/*.hybrid {
+.hybrid {
   --tagged: 0;
-  --untagged: var(--pvid);
   background-image: linear-gradient(
-    135deg,
-    hsl(calc(var(--hue) * var(--tagged)) var(--saturation) var(--lightness)) 60%,
-    hsl(calc(var(--hue) * var(--untagged)) var(--saturation) var(--lightness)) 60%
+    145deg,
+    transparent 60%,
+    hsl(calc(var(--hue) * var(--tagged)) var(--saturation) var(--lightness)) 60%
   );
-  background-size: cover;
-  background-position: center;
-  background-origin: border-box;
-}*/
+}
 
 .shutdown:not([class*="loopback-detection action shutdown"]) {
   background-color: lightgray;

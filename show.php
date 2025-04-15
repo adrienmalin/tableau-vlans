@@ -98,10 +98,10 @@ echo ("-->");*/
                     <td class='interface trunk'></td>
                     <td colspan='2'>Trunk</td>
                 </tr>
-                <!--<tr>
+                <tr>
                     <td class='interface hybrid' style='--tagged:60; --untagged:0'></td>
-                    <td colspan='2'>Hybride (tagged/untagged)</td>
-                </tr>-->
+                    <td colspan='2'>Hybride (PVID / tagged)</td>
+                </tr>
                 <tr>
                     <td class='interface poe'></td>
                     <td colspan='2'>Power on Ethernet</td>

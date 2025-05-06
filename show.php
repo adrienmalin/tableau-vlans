@@ -60,8 +60,7 @@ echo ("-->");*/
             <h2>Interfaces</h2>
             <?php
             foreach ($stack as $member_id => $lines) {
-                $member_7_segments = mb_convert_encoding("&#x" . dechex(0x1FBF0 + $member_id) . ";", 'UTF-8', 'HTML-ENTITIES');
-                echo "<div class='member'>\n<span class='member-id'>$member_7_segments</span>\n<table class='interfaces'>\n<tbody>\n";
+                echo "<div class='member'>\n<span class='member-id'>$member_id</span>\n<table class='interfaces'>\n<tbody>\n";
                 foreach ($lines as $interfaces) {
                     ksort($interfaces);
                     echo "<tr>\n";

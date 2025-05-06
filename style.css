@@ -104,26 +104,24 @@ main {
 
 .member {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   border: 6px outset #476079;
   border-radius: 4px;
   background-color: #34495e;
   margin-bottom: 0.5rem;
   print-color-adjust: exact;
-  justify-content: flex-start;
 }
 
 .member-id {
-  background: #666;
+  background: #888;
   align-content: center;
   color: lightgreen;
-  text-shadow: 0 1px 3px #fff5;
+  text-shadow: 0 1px 3px #fffb;
   font-weight: bold;
   border: 2px inset black;
   font-family: monospace;
-  margin: 0 0.5em;
-  padding: 0 0.3em;
-  font-size: 1.4em;
+  margin: 1em 0.5em;
+  padding: 0.12em 0.4em;
 }
 
 .interfaces {

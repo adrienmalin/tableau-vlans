@@ -45,6 +45,7 @@ echo ("-->");*/
 <head>
     <title><?= $sysname[1] ?? "Switch sans nom" ?> - Tableau des VLANs</title>
     <link href="style.css" rel="stylesheet" />
+    <link rel="icon" type="image/svg" href="favicon.svg">
 </head>
 
 <body>

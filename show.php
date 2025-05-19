@@ -3,11 +3,16 @@
 $path = realpath($basedir . DIRECTORY_SEPARATOR . ltrim(urldecode($_SERVER["QUERY_STRING"]), '/'));
 
 if (strpos($path, $basedir) !== 0 || substr($path, -4) != ".cfg") {
-    http_response_code(403);
-    die();
+    http_response_code(404);
+    die("Fichier non trouvé");
 }
 
 $conf = file_get_contents($path);
+
+if ($conf === false) {
+    http_error_code(404);
+    die("Fichier non trouvé");
+}
 
 preg_match("/ sysname ([\w-]+)/", $conf, $sysname);
 preg_match("/ip address ([\d.]+)/", $conf, $address);

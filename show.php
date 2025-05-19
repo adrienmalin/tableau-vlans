@@ -122,7 +122,7 @@ foreach ($interfaces as $interface) {
         </table>
     </main>
     <footer>
-        <label id="colorSliderLabel" for="colorSlider" class="no-print">Changer les couleurs (ou cliquez dans la légende)</label>
+        <label for="colorSlider" class="no-print">Changer les couleurs (ou cliquez dans la légende)</label>
         <input id="colorSlider" type="range" min="0" max="360" step="0.000000001" value="58.3"
             oninput="document.documentElement.style.setProperty('--hue', this.value);" class="no-print" />
         <a href="<?= str_replace(__DIR__ . "/", "", $path) ?>" target="_blank" class="link no-print">Télécharger la configuration</a>

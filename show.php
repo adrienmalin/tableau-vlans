@@ -2,7 +2,11 @@
 
 $path = realpath($basedir . DIRECTORY_SEPARATOR . ltrim(urldecode($_SERVER["QUERY_STRING"]), '/'));
 
-if (strpos($path, $basedir) !== 0 || substr($path, -4) != ".cfg") {
+if (
+    strpos($path, $basedir) !== 0
+    || substr($path, -4) != ".cfg"
+    || !file_exists($path)
+    ) {
     http_response_code(404);
     die("Fichier non trouvé");
 }

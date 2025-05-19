@@ -1,8 +1,8 @@
 <?php
 $basedir = __DIR__ . "/confs/";
-$path = realpath($basedir . filter_input(INPUT_GET, "switch", FILTER_SANITIZE_STRING));
-if (strpos($path, $basedir) !== 0 || substr($path, -4) != ".cfg") {
-    header('HTTP/1.1 404 Not Found');
+$path = escapeshellcmd(realpath($basedir . $_GET["switch"]));
+if (substr($path, -4) != ".cfg") {
+    http_response_code(404);
     die();
 }
 
@@ -45,6 +45,7 @@ echo ("-->");*/
 <head>
     <title><?= $sysname[1] ?? "Switch sans nom" ?> - Tableau des VLANs</title>
     <link href="style.css" rel="stylesheet" />
+    <style id="customColors"></style>
 </head>
 
 <body>
@@ -90,7 +91,7 @@ echo ("-->");*/
                     if (isset($vlan["pvid"]) and $vlan["pvid"] != 1) {
                         $name = $vlan["name"] ?? "";
                         $description = $vlan["description"] ?? "";
-                        echo "<tr title='{$vlan[0]}'><td class='interface vlan' style='--pvid: {$vlan["pvid"]}'>{$vlan["pvid"]}</td><td>$name</td><td>$description</td></tr>";
+                        echo "<tr title='{$vlan[0]}'><td class='interface vlan {$vlan["pvid"]}' style='--pvid: {$vlan["pvid"]};'>{$vlan["pvid"]}<input type='color' oninput='changeColor({$vlan["pvid"]}, this.value)' /></td><td>$name</td><td>$description</td></tr>";
                     }
                 }
                 ?>
@@ -124,6 +125,17 @@ echo ("-->");*/
         <a href="<?= str_replace(__DIR__ . "/", "", $path) ?>" target="_blank" class="link no-print">Télécharger la configuration</a>
         <a href="index.php" class="link no-print">← Retour à la liste</a>
     </footer>
+    <script>
+        function changeColor(pvid, color) {
+            for (let i = 0; i < customColors.sheet.cssRules.length; i++) {
+                if (customColors.sheet.cssRules[i].selectorText == `[style*="--pvid: ${pvid}"]`) {
+                    customColors.sheet.deleteRule(i)
+                    break
+                }
+            }
+            customColors.sheet.insertRule(`[style*="--pvid: ${pvid}"] { background-color: ${color} }`)
+        }
+    </script>
 </body>
 
 </html>

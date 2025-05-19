@@ -235,6 +235,16 @@ footer {
   width: 33%;
 }
 
+input[type="color"] {
+  opacity: 0%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+
 @media print {
   body {
     margin: auto;

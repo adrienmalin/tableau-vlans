@@ -136,7 +136,6 @@ main {
   vertical-align: middle;
   min-width: 2em;
   height: 2em;
-  cursor: help;
   transition: 0.2s background-color;
   border: 3px inset #476079;
   border-image-width: 5px;
@@ -148,6 +147,10 @@ main {
   background-size: cover;
   background-position: center;
   background-origin: border-box;
+}
+
+[title] {
+  cursor: help;
 }
 
 .member tr:nth-child(even) .interface {

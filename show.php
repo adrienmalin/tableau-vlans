@@ -13,17 +13,17 @@ $conf = file_get_contents($path);
 preg_match("/ sysname ([\w-]+)/", $conf, $sysname);
 preg_match("/ip address ([\d.]+)/", $conf, $address);
 $startPattern           = "(?<=\n)";
-$NLP                    = "[\r\n]+";
-$vlanPvidPattern        = "vlan (?P<pvid>\d+)$NLP";
-$vlanNamePattern        = " name (?P<name>.+)$NLP";
-$vlanDescriptionPattern = " description (?P<description>.+)$NLP";
-$otherPattern           = " .*$NLP";
+$NL                     = "[\r\n]+";
+$vlanPvidPattern        = "vlan (?P<pvid>\d+)$NL";
+$vlanNamePattern        = " name (?P<name>.+)$NL";
+$vlanDescriptionPattern = " description (?P<description>.+)$NL";
+$otherPattern           = " .*$NL";
 $endPattern             = "(?<!#)";
 preg_match_all("/$startPattern$vlanPvidPattern(?:$vlanNamePattern|$vlanDescriptionPattern|$otherPattern)*$endPattern/", $conf, $vlans, PREG_SET_ORDER);
-$interfaceAddressPattern = "interface [\w-]+(?P<member>\d+)\/0\/(?P<port>\d+)$NLP";
-$pvidPattern             = " port (?:access vlan|trunk pvid) (?P<pvid>\d+)$NLP";
-$portHybridPattern       = " port hybrid (?:pvid )?vlan (?:(?P<tagged>\d+)(?: [0-9a-z ]*)? tagged|(?P<untagged>\d+)(?: \d+)* untagged)$NLP";
-$voiceVlanPattern        = " voice-vlan (?P<voice_vlan>\d+) enable$NLP";
+$interfaceAddressPattern = "interface [\w-]+(?P<member>\d+)\/0\/(?P<port>\d+)$NL";
+$pvidPattern             = " port (?:access|trunk pvid) vlan (?P<pvid>\d+)$NL";
+$portHybridPattern       = " port hybrid (?:pvid )?vlan (?:(?P<tagged>\d+)(?: [0-9a-z ]*)? tagged|(?P<untagged>\d+)(?: \d+)* untagged)$NL";
+$voiceVlanPattern        = " voice-vlan (?P<voice_vlan>\d+) enable$NL";
 preg_match_all("/$startPattern$interfaceAddressPattern(?:$pvidPattern|$portHybridPattern|$voiceVlanPattern|$otherPattern)*$endPattern/", $conf, $interfaces, PREG_SET_ORDER);
 
 $stack = array();
@@ -94,7 +94,7 @@ echo ("-->");*/
                     if (isset($vlan["pvid"]) and $vlan["pvid"] != 1) {
                         $name = $vlan["name"] ?? "";
                         $description = $vlan["description"] ?? "";
-                        echo "<tr title='{$vlan[0]}'><td class='interface vlan {$vlan["pvid"]}' style='--pvid: {$vlan["pvid"]};'>{$vlan["pvid"]}<input type='color' oninput='changeColor({$vlan["pvid"]}, this.value)' /></td><td>$name</td><td>$description</td></tr>";
+                        echo "<tr title='{$vlan[0]}'><td class='interface vlan {$vlan["pvid"]}' style='--pvid: {$vlan["pvid"]};'>{$vlan["pvid"]}<input type='color' oninput='changeColor({$vlan["pvid"]}, this.value)' title='Changer la couleur' /></td><td>$name</td><td>$description</td></tr>";
                     }
                 }
                 ?>
@@ -122,7 +122,7 @@ echo ("-->");*/
         </table>
     </main>
     <footer>
-        <label id="colorSliderLabel" for="colorSlider" class="no-print">Changer les couleurs</label>
+        <label id="colorSliderLabel" for="colorSlider" class="no-print">Changer les couleurs (ou cliquez dans la légende)</label>
         <input id="colorSlider" type="range" min="0" max="360" step="0.000000001" value="58.3"
             oninput="document.documentElement.style.setProperty('--hue', this.value);" class="no-print" />
         <a href="<?= str_replace(__DIR__ . "/", "", $path) ?>" target="_blank" class="link no-print">Télécharger la configuration</a>
@@ -131,12 +131,12 @@ echo ("-->");*/
     <script>
         function changeColor(pvid, color) {
             for (let i = 0; i < customColors.sheet.cssRules.length; i++) {
-                if (customColors.sheet.cssRules[i].selectorText == `[style*="--pvid: ${pvid}"]`) {
+                if (customColors.sheet.cssRules[i].selectorText == `[class*="pvid ${pvid}"], [class*="vlan ${pvid}"]`) {
                     customColors.sheet.deleteRule(i)
                     break
                 }
             }
-            customColors.sheet.insertRule(`[style*="--pvid: ${pvid}"] { background-color: ${color} }`)
+            customColors.sheet.insertRule(`[class*="pvid ${pvid}"], [class*="vlan ${pvid}"] { background-color: ${color} }`)
         }
     </script>
 </body>

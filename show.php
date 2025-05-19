@@ -1,10 +1,9 @@
 <?php
-setlocale(LC_CTYPE, "fr_FR.UTF-8");
 
-$basedir = __DIR__ . "/confs/";
-$path = escapeshellcmd(realpath($basedir . $_GET["switch"]));
-if (substr($path, -4) != ".cfg") {
-    http_response_code(404);
+$path = realpath($basedir . DIRECTORY_SEPARATOR . ltrim(urldecode($_SERVER["QUERY_STRING"]), '/'));
+
+if (strpos($path, $basedir) !== 0 || substr($path, -4) != ".cfg") {
+    http_response_code(403);
     die();
 }
 

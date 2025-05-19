@@ -1,4 +1,6 @@
 <?php
+setlocale(LC_CTYPE, "fr_FR.UTF-8");
+
 $basedir = __DIR__ . "/confs/";
 $path = escapeshellcmd(realpath($basedir . $_GET["switch"]));
 if (substr($path, -4) != ".cfg") {

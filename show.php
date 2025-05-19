@@ -36,16 +36,12 @@ foreach ($interfaces as $interface) {
     if (!empty($interface["voice_vlan"])) $interface["style"] .= "--voice-vlan: {$interface["voice_vlan"]}; ";
     $stack[$interface["member"]][1 - $interface["port"] % 2][$interface["port"]] = $interface;
 }
-
-/*echo ("<!--");
-var_dump($stack);
-echo ("-->");*/
 ?>
 <!DOCTYPE HTML>
 <html lang='fr'>
 
 <head>
-    <title><?= $sysname[1] ?? "Switch sans nom" ?> - Tableau des VLANs</title>
+    <title><?= $sysname[1] ?? "Switch sans nom" ?> - Schéma des VLANs</title>
     <link href="style.css" rel="stylesheet" />
     <link rel="icon" type="image/svg" href="favicon.svg">
     <style id="customColors"></style>

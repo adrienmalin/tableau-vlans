@@ -4,6 +4,7 @@
 <head>
     <title>Schémas des VLANs</title>
     <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="icon" type="image/svg" href="favicon.svg">
 </head>
 
 <body>

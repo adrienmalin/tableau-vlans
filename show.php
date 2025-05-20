@@ -30,7 +30,7 @@ $endPattern             = "(?<!#)";
 preg_match_all("/$startPattern$vlanPvidPattern(?:$vlanNamePattern|$vlanDescriptionPattern|$otherPattern)*$endPattern/", $conf, $vlans, PREG_SET_ORDER);
 $interfaceAddressPattern = "interface [\w-]+(?P<member>\d+)\/0\/(?P<port>\d+)$NL";
 $pvidPattern             = " port (?:access|trunk pvid|hybrid pvid) vlan (?P<pvid>\d+)$NL";
-$portHybridPattern       = " port hybrid vlan (?:(?P<tagged>\d+)(?: [\d ]*)? tagged|(?P<untagged>\d+)(?: \d+)* untagged)$NL";
+$portHybridPattern       = " port hybrid vlan (?:(?P<tagged>\d+)(?: (?:to|\d+))* tagged|(?P<untagged>\d+)(?: \d+)* untagged)$NL";
 $voiceVlanPattern        = " voice-vlan (?P<voice_vlan>\d+) enable$NL";
 preg_match_all("/$startPattern$interfaceAddressPattern(?:$pvidPattern|$portHybridPattern|$voiceVlanPattern|$otherPattern)*$endPattern/", $conf, $interfaces, PREG_SET_ORDER);
 
@@ -38,10 +38,10 @@ $stack = array();
 foreach ($interfaces as $interface) {
     if (!isset($stack[$interface["member"]])) $stack[$interface["member"]] = [[], []];
     $interface["style"] = "";
-    if (!empty($interface["pvid"])) $interface["style"] .= "--pvid: {$interface["pvid"]}; ";
-    if (!empty($interface["tagged"])) $interface["style"] .= "--tagged: {$interface["tagged"]}; ";
-    if (!empty($interface["untagged"])) $interface["style"] .= "--untagged: {$interface["untagged"]}; ";
-    if (!empty($interface["voice_vlan"])) $interface["style"] .= "--voice-vlan: {$interface["voice_vlan"]}; ";
+    if (!empty($interface["pvid"])) $interface["style"] .= "--pvid: {$interface["pvid"]};";
+    if (!empty($interface["tagged"])) $interface["style"] .= " --tagged: {$interface["tagged"]};";
+    if (!empty($interface["untagged"])) $interface["style"] .= " --untagged: {$interface["untagged"]};";
+    if (!empty($interface["voice_vlan"])) $interface["style"] .= " --voice-vlan: {$interface["voice_vlan"]};";
     $stack[$interface["member"]][1 - $interface["port"] % 2][$interface["port"]] = $interface;
 }
 ?>

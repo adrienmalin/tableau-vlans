@@ -190,6 +190,8 @@ main {
 .hybrid {
   --tagged: 0;
   --tagged-color: hsl(calc(var(--hue) * var(--tagged)) var(--saturation) var(--lightness));
+  --untagged: var(--pvid);
+  --untagged-color: hsl(calc(var(--hue) * var(--untagged)) var(--saturation) var(--lightness));
   background-image: linear-gradient(145deg, transparent 50%, var(--tagged-color) 50%);
 }
 

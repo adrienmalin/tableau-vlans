@@ -29,7 +29,7 @@ $otherPattern           = " .*$NL";
 $endPattern             = "(?<!#)";
 preg_match_all("/$startPattern$vlanPvidPattern(?:$vlanNamePattern|$vlanDescriptionPattern|$otherPattern)*$endPattern/", $conf, $vlans, PREG_SET_ORDER);
 $interfaceAddressPattern = "interface [\w-]+(?P<member>\d+)\/0\/(?P<port>\d+)$NL";
-$pvidPattern             = " port (?:access|trunk pvid) vlan (?P<pvid>\d+)$NL";
+$pvidPattern             = " port (?:access|trunk pvid|hybrid pvid) vlan (?P<pvid>\d+)$NL";
 $portHybridPattern       = " port hybrid (?:pvid )?vlan (?:(?P<tagged>\d+)(?: [0-9a-z ]*)? tagged|(?P<untagged>\d+)(?: \d+)* untagged)$NL";
 $voiceVlanPattern        = " voice-vlan (?P<voice_vlan>\d+) enable$NL";
 preg_match_all("/$startPattern$interfaceAddressPattern(?:$pvidPattern|$portHybridPattern|$voiceVlanPattern|$otherPattern)*$endPattern/", $conf, $interfaces, PREG_SET_ORDER);
@@ -137,10 +137,13 @@ foreach ($interfaces as $interface) {
             for (let i = 0; i < customColors.sheet.cssRules.length; i++) {
                 if (customColors.sheet.cssRules[i].selectorText == `[style*="--pvid: ${pvid}"]`) {
                     customColors.sheet.deleteRule(i)
-                    break
+                }
+                if (customColors.sheet.cssRules[i].selectorText == `[style*="--tagged: ${pvid}"]`) {
+                    customColors.sheet.deleteRule(i)
                 }
             }
-            customColors.sheet.insertRule(`[style*="--pvid: ${pvid}"] { background-color: ${color} }`)
+            customColors.sheet.insertRule(`[style*="--pvid: ${pvid}"] { --pvid-color: ${color} }`)
+            customColors.sheet.insertRule(`[style*="--tagged: ${pvid}"] { --tagged-color: ${color} }`)
         }
     </script>
 </body>

@@ -135,15 +135,15 @@ foreach ($interfaces as $interface) {
     <script>
         function changeColor(pvid, color) {
             for (let i = 0; i < customColors.sheet.cssRules.length; i++) {
-                if (customColors.sheet.cssRules[i].selectorText == `[style*="--pvid: ${pvid}"]`) {
+                if (customColors.sheet.cssRules[i].selectorText == `[style*="--pvid: ${pvid};"]`) {
                     customColors.sheet.deleteRule(i)
                 }
-                if (customColors.sheet.cssRules[i].selectorText == `[style*="--tagged: ${pvid}"]`) {
+                if (customColors.sheet.cssRules[i].selectorText == `[style*="--tagged: ${pvid};"]`) {
                     customColors.sheet.deleteRule(i)
                 }
             }
-            customColors.sheet.insertRule(`[style*="--pvid: ${pvid}"] { --pvid-color: ${color} }`)
-            customColors.sheet.insertRule(`[style*="--tagged: ${pvid}"] { --tagged-color: ${color} }`)
+            customColors.sheet.insertRule(`[style*="--pvid: ${pvid};"] { --pvid-color: ${color} }`)
+            customColors.sheet.insertRule(`[style*="--tagged: ${pvid};"] { --tagged-color: ${color} }`)
         }
     </script>
 </body>

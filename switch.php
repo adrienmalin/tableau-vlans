@@ -20,18 +20,18 @@ if ($conf === false) {
 
 preg_match("/ sysname ([\w-]+)/", $conf, $sysname);
 preg_match("/ip address ([\d.]+)/", $conf, $address);
-$startPattern           = "(?<=\n)";
-$NL                     = "[\r\n]+";
+$startPattern           = "(?<=[\r\n])";
+$NL                     = "(?:[\r\n]+)";
 $vlanPvidPattern        = "vlan (?P<pvid>\d+)$NL";
-$vlanNamePattern        = " name (?P<name>.+)$NL";
-$vlanDescriptionPattern = " description (?P<description>.+)$NL";
-$otherPattern           = " .*$NL";
+$vlanNamePattern        = "$startPattern name (?P<name>.+)$NL";
+$vlanDescriptionPattern = "$startPattern description (?P<description>.+)$NL";
+$otherPattern           = "$startPattern .*$NL";
 $endPattern             = "(?<!#)";
 preg_match_all("/$startPattern$vlanPvidPattern(?:$vlanNamePattern|$vlanDescriptionPattern|$otherPattern)*$endPattern/", $conf, $vlans, PREG_SET_ORDER);
 $interfaceAddressPattern = "interface [\w-]+(?P<member>\d+)\/0\/(?P<port>\d+)$NL";
-$pvidPattern             = " port (?:access|trunk pvid|hybrid pvid) vlan (?P<pvid>\d+)$NL";
-$portHybridPattern       = " port hybrid vlan (?:(?P<tagged>\d+)(?: (?:to|\d+))* tagged|(?P<untagged>\d+)(?: \d+)* untagged)$NL";
-$voiceVlanPattern        = " voice-vlan (?P<voice_vlan>\d+) enable$NL";
+$pvidPattern             = "$startPattern port (?:access|trunk pvid|hybrid pvid) vlan (?P<pvid>\d+)$NL";
+$portHybridPattern       = "$startPattern port hybrid vlan (?:(?P<tagged>\d+)(?: (?:to|\d+))* tagged|(?P<untagged>\d+)(?: \d+)* untagged)$NL";
+$voiceVlanPattern        = "$startPattern voice-vlan (?P<voice_vlan>\d+) enable$NL";
 preg_match_all("/$startPattern$interfaceAddressPattern(?:$pvidPattern|$portHybridPattern|$voiceVlanPattern|$otherPattern)*$endPattern/", $conf, $interfaces, PREG_SET_ORDER);
 
 $stack = array();
@@ -50,8 +50,9 @@ foreach ($interfaces as $interface) {
 
 <head>
     <title><?= $sysname[1] ?? "Switch sans nom" ?> - Schéma des VLANs</title>
-    <link href="style.css" rel="stylesheet" />
     <link rel="icon" type="image/svg" href="favicon.svg">
+    <link href="style.css" rel="stylesheet" />
+    <link href="custom.css" rel="stylesheet" />
     <style id="customColors"></style>
 </head>
 
@@ -146,7 +147,6 @@ foreach ($interfaces as $interface) {
             customColors.sheet.insertRule(`[style*="--pvid: ${pvid};"] { --pvid-color: ${color} }`)
             customColors.sheet.insertRule(`[style*="--tagged: ${pvid};"] { --tagged-color: ${color} }`)
             customColors.sheet.insertRule(`[style*="--untagged: ${pvid};"] { --untagged-color: ${color} }`)
-            console.log(customColors.sheet.cssRules)
         }
     </script>
 </body>

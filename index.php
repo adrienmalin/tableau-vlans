@@ -5,7 +5,7 @@ require_once "config.php";
 setlocale(LC_CTYPE, $locale);
 
 if ($_SERVER["QUERY_STRING"] != "") {
-    include "show.php";
+    include "switch.php";
     exit;
 }
 ?>

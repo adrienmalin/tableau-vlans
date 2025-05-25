@@ -20,19 +20,19 @@ if ($conf === false) {
 
 preg_match("/ sysname ([\w-]+)/", $conf, $sysname);
 preg_match("/ip address ([\d.]+)/", $conf, $address);
-$startPattern           = "(?<=[\r\n])";
+$startPtn           = "(?<=[\r\n])";
 $NL                     = "(?:[\r\n]+)";
-$vlanPvidPattern        = "vlan (?P<pvid>\d+)$NL";
-$vlanNamePattern        = "$startPattern name (?P<name>.+)$NL";
-$vlanDescriptionPattern = "$startPattern description (?P<description>.+)$NL";
-$otherPattern           = "$startPattern .*$NL";
-$endPattern             = "(?<!#)";
-preg_match_all("/$startPattern$vlanPvidPattern(?:$vlanNamePattern|$vlanDescriptionPattern|$otherPattern)*$endPattern/", $conf, $vlans, PREG_SET_ORDER);
-$interfaceAddressPattern = "interface [\w-]+(?P<member>\d+)\/0\/(?P<port>\d+)$NL";
-$pvidPattern             = "$startPattern port (?:access|trunk pvid|hybrid pvid) vlan (?P<pvid>\d+)$NL";
-$portHybridPattern       = "$startPattern port hybrid vlan (?:(?P<tagged>\d+)(?: (?:to|\d+))* tagged|(?P<untagged>\d+)(?: \d+)* untagged)$NL";
-$voiceVlanPattern        = "$startPattern voice-vlan (?P<voice_vlan>\d+) enable$NL";
-preg_match_all("/$startPattern$interfaceAddressPattern(?:$pvidPattern|$portHybridPattern|$voiceVlanPattern|$otherPattern)*$endPattern/", $conf, $interfaces, PREG_SET_ORDER);
+$vlanPvidPtn        = "vlan (?P<pvid>\d+)$NL";
+$vlanNamePtn        = "$startPtn name (?P<name>.+)$NL";
+$vlanDescriptionPtn = "$startPtn description (?P<description>.+)$NL";
+$otherPtn           = "$startPtn .*$NL";
+$endPtn             = "(?<!#)";
+preg_match_all("/$startPtn$vlanPvidPtn(?:$vlanNamePtn|$vlanDescriptionPtn|$otherPtn)*$endPtn/", $conf, $vlans, PREG_SET_ORDER);
+$interfaceAddressPtn = "interface [\w-]+(?P<member>\d+)\/0\/(?P<port>\d+)$NL";
+$pvidPtn             = "$startPtn port (?:access|trunk pvid|hybrid pvid) vlan (?P<pvid>\d+)$NL";
+$portHybridPtn       = "$startPtn port hybrid vlan (?:(?P<tagged>\d+)(?: (?:to|\d+))* tagged|(?P<untagged>\d+)(?: \d+)* untagged)$NL";
+$voiceVlanPtn        = "$startPtn voice-vlan (?P<voice_vlan>\d+) enable$NL";
+preg_match_all("/$startPtn$interfaceAddressPtn(?:$pvidPtn|$portHybridPtn|$voiceVlanPtn|$otherPtn)*$endPtn/", $conf, $interfaces, PREG_SET_ORDER);
 
 $stack = array();
 foreach ($interfaces as $interface) {

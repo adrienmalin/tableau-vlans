@@ -12,12 +12,15 @@
 }
 
 body {
-  margin: 2rem auto;
-  padding: 0 1rem;
+  margin: 0;
+  padding: 2rem 1rem;
   font-family: Arial, sans-serif;
   line-height: 1.6;
   background-color: #f5f5f5;
   color: #333;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
 h1 {
@@ -94,10 +97,11 @@ h2 {
 }
 
 main {
+  flex-grow: 2;
   display: flex;
   flex-flow: wrap;
   align-items: center;
-  justify-content: space-evenly;
+  justify-content: space-around;
   gap: 1rem;
   margin-bottom: 2rem;
 }
@@ -163,7 +167,9 @@ main {
 
 .vlan {
   --pvid: 0;
-  --pvid-color: hsl(calc(var(--hue) * var(--pvid)) var(--saturation) var(--lightness));
+  --pvid-color: hsl(
+    calc(var(--hue) * var(--pvid)) var(--saturation) var(--lightness)
+  );
   color: #ecf0f1;
   text-shadow: 1px 2px 2px black;
   background-color: var(--pvid-color);
@@ -187,13 +193,13 @@ main {
   );
 }
 
-.hybrid {
+/*.hybrid {
   --tagged: 0;
   --tagged-color: hsl(calc(var(--hue) * var(--tagged)) var(--saturation) var(--lightness));
   --untagged: var(--pvid);
   --untagged-color: hsl(calc(var(--hue) * var(--untagged)) var(--saturation) var(--lightness));
-  background-image: linear-gradient(145deg, transparent 50%, var(--tagged-color) 50%);
-}
+  background-image: linear-gradient(145deg, transparent 65%, var(--tagged-color) 65%);
+}*/
 
 .shutdown:not([class*="loopback-detection action shutdown"]) {
   background-color: lightgray;
@@ -249,7 +255,6 @@ input[type="color"] {
 @media print {
   body {
     margin: auto;
-    padding: 0;
     background-color: unset;
   }
 

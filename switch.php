@@ -6,7 +6,7 @@ if (
     strpos($path, $basedir) !== 0
     || substr($path, -4) != ".cfg"
     || !file_exists($path)
-    ) {
+) {
     http_response_code(404);
     die("Fichier non trouvé");
 }
@@ -107,10 +107,10 @@ foreach ($interfaces as $interface) {
                     <td class='interface trunk'></td>
                     <td colspan='2'>Trunk</td>
                 </tr>
-                <tr>
+                <!--<tr>
                     <td class='interface hybrid' style='--tagged:60; --untagged:0'></td>
                     <td colspan='2'>Hybride (PVID / tagged)</td>
-                </tr>
+                </tr>-->
                 <tr>
                     <td class='interface poe'></td>
                     <td colspan='2'>Power on Ethernet</td>
@@ -137,9 +137,9 @@ foreach ($interfaces as $interface) {
         function changeColor(pvid, color) {
             for (let i = customColors.sheet.cssRules.length - 1; i >= 0; i--) {
                 if (
-                    (customColors.sheet.cssRules[i].selectorText == `[style*="--pvid: ${pvid};"]`)
-                    || (customColors.sheet.cssRules[i].selectorText == `[style*="--tagged: ${pvid};"]`)
-                    || (customColors.sheet.cssRules[i].selectorText == `[style*="--untagged: ${pvid};"]`)
+                    (customColors.sheet.cssRules[i].selectorText == `[style*="--pvid: ${pvid};"]`) ||
+                    (customColors.sheet.cssRules[i].selectorText == `[style*="--tagged: ${pvid};"]`) ||
+                    (customColors.sheet.cssRules[i].selectorText == `[style*="--untagged: ${pvid};"]`)
                 ) {
                     customColors.sheet.deleteRule(i)
                 }

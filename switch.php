@@ -36,6 +36,7 @@ preg_match_all("/$startPtn$interfaceAddressPtn(?:$pvidPtn|$portHybridPtn|$voiceV
 
 $stack = array();
 foreach ($interfaces as $interface) {
+    if ($interface["member"] == 0) continue;
     if (!isset($stack[$interface["member"]])) $stack[$interface["member"]] = [[], []];
     $interface["style"] = "";
     if (!empty($interface["pvid"])) $interface["style"] .= "--pvid: {$interface["pvid"]};";
